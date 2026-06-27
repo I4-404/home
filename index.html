@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ركن البنات - يومياتي</title>
-    <!-- Font Awesome للأيقونات الجميلة -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ====== المتغيرات الأساسية (الثيمات) ====== */
+        /* ====== المتغيرات ====== */
         :root {
             --bg-primary: #fef6fb;
             --bg-secondary: #ffffff;
@@ -23,15 +22,21 @@
             --sidebar-text: #5a2d44;
             --link-bg: rgba(255, 255, 255, 0.5);
             --link-hover: #ffffff;
+            --link-active: #ffffff;
             --btn-bg: #ffe2ed;
             --btn-text: #7a3b5a;
             --footer-border: #f5dce4;
             --scroll-track: #fce4ec;
             --scroll-thumb: #f7b0c8;
+            --toggle-bg: #ffffff;
+            --toggle-border: #fbc8d5;
+            --toggle-shadow: rgba(255, 105, 180, 0.3);
             --input-bg: #ffffff;
+            --input-border: #fce4ec;
+            --badge-bg: #ffd1dc;
+            --badge-text: #7a3b5a;
         }
 
-        /* ====== الثيم الداكن ====== */
         [data-theme="dark"] {
             --bg-primary: #1a1118;
             --bg-secondary: #2a1f26;
@@ -47,15 +52,22 @@
             --sidebar-text: #f0d0dc;
             --link-bg: rgba(255, 200, 220, 0.1);
             --link-hover: #4a2f3d;
+            --link-active: #4a2f3d;
             --btn-bg: #4a2f3d;
             --btn-text: #f0d0dc;
             --footer-border: #3d2a33;
             --scroll-track: #2a1f26;
             --scroll-thumb: #5a3a4a;
+            --toggle-bg: #2a1f26;
+            --toggle-border: #4a3340;
+            --toggle-shadow: rgba(200, 100, 150, 0.2);
             --input-bg: #2a1f26;
+            --input-border: #4a3340;
+            --badge-bg: #4a2f3d;
+            --badge-text: #f0c8d8;
         }
 
-        /* ====== الخطوط والألوان الأساسية ====== */
+        /* ====== الأساسيات ====== */
         * {
             margin: 0;
             padding: 0;
@@ -67,96 +79,73 @@
             background: var(--bg-primary);
             display: flex;
             min-height: 100vh;
-            transition: background 0.4s ease, color 0.4s ease;
+            transition: all 0.4s ease;
         }
 
-        /* ====== زر تبديل الثيم ====== */
-        .theme-toggle {
-            position: fixed;
-            top: 18px;
-            left: 20px;
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
-            border-radius: 50px;
-            padding: 10px 18px;
-            font-size: 16px;
-            color: var(--text-secondary);
-            box-shadow: 0 4px 15px var(--shadow-color);
-            z-index: 1200;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.25);
-        }
-
-        .theme-toggle i {
-            font-size: 20px;
-            color: #d4628a;
-        }
-
-        [data-theme="dark"] .theme-toggle i {
-            color: #f0a0c0;
-        }
-
-        /* ====== القائمة الجانبية (Drawer) ====== */
+        /* ====== القائمة الجانبية ====== */
         .sidebar {
-            width: 250px;
+            width: 280px;
             background: var(--sidebar-bg);
-            padding: 30px 15px;
-            box-shadow: 4px 0 15px var(--shadow-color);
+            padding: 25px 15px;
+            box-shadow: 4px 0 20px var(--shadow-color);
             height: 100vh;
             position: fixed;
             top: 0;
             right: 0;
-            transition: transform 0.4s ease-in-out, background 0.4s ease;
+            transition: all 0.4s ease;
             z-index: 1000;
             border-radius: 0 0 0 30px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar.hidden {
-            transform: translateX(100%);
+        .sidebar-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
         }
 
-        .sidebar h2 {
+        .sidebar-header h2 {
             color: var(--sidebar-text);
             font-weight: 300;
             font-size: 24px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-            text-align: center;
-            letter-spacing: 1px;
             transition: color 0.4s;
         }
 
-        .sidebar h2 i {
+        .sidebar-header h2 i {
             color: #d4628a;
             margin-left: 10px;
         }
 
-        [data-theme="dark"] .sidebar h2 i {
+        [data-theme="dark"] .sidebar-header h2 i {
             color: #e887a8;
         }
 
-        .sidebar ul {
+        .sidebar-header p {
+            color: var(--sidebar-text);
+            font-size: 13px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+        }
+
+        .sidebar-nav ul {
             list-style: none;
             padding: 0;
         }
 
-        .sidebar ul li {
-            margin: 18px 0;
+        .sidebar-nav ul li {
+            margin: 8px 0;
         }
 
-        .sidebar ul li a {
-            display: block;
+        .sidebar-nav ul li a {
+            display: flex;
+            align-items: center;
             padding: 12px 18px;
             color: var(--sidebar-text);
             background: var(--link-bg);
@@ -164,37 +153,107 @@
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s;
-            font-size: 17px;
+            font-size: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(4px);
+            gap: 12px;
         }
 
-        .sidebar ul li a i {
-            margin-left: 12px;
-            width: 22px;
+        .sidebar-nav ul li a i {
+            width: 24px;
             color: #b34b6e;
+            transition: color 0.3s;
         }
 
-        [data-theme="dark"] .sidebar ul li a i {
+        [data-theme="dark"] .sidebar-nav ul li a i {
             color: #e887a8;
         }
 
-        .sidebar ul li a:hover,
-        .sidebar ul li a.active {
-            background: var(--link-hover);
+        .sidebar-nav ul li a:hover,
+        .sidebar-nav ul li a.active {
+            background: var(--link-active);
             color: #9f3f60;
             box-shadow: 0 6px 15px rgba(255, 20, 100, 0.15);
             border-color: #f7a1c4;
             transform: scale(1.02);
         }
 
-        [data-theme="dark"] .sidebar ul li a:hover,
-        [data-theme="dark"] .sidebar ul li a.active {
+        [data-theme="dark"] .sidebar-nav ul li a:hover,
+        [data-theme="dark"] .sidebar-nav ul li a.active {
             color: #f0c8d8;
             border-color: #8a5a72;
         }
 
-        /* ====== زر فتح/إغلاق القائمة (للشاشات الصغيرة) ====== */
+        .sidebar-nav ul li a .badge {
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-right: auto;
+            transition: all 0.3s;
+        }
+
+        /* ====== زر الثيم داخل القائمة ====== */
+        .theme-toggle-sidebar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px;
+            background: var(--link-bg);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--sidebar-text);
+        }
+
+        .theme-toggle-sidebar:hover {
+            background: var(--link-active);
+            transform: scale(1.02);
+        }
+
+        .theme-toggle-sidebar .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .theme-toggle-sidebar .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: var(--border-color);
+            border-radius: 30px;
+            position: relative;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle-sidebar .toggle-switch::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        [data-theme="dark"] .theme-toggle-sidebar .toggle-switch {
+            background: #d4628a;
+        }
+
+        [data-theme="dark"] .theme-toggle-sidebar .toggle-switch::after {
+            right: 27px;
+        }
+
+        /* ====== زر القائمة (للجوال) ====== */
         .menu-toggle {
             position: fixed;
             top: 18px;
@@ -220,27 +279,59 @@
         /* ====== المحتوى الرئيسي ====== */
         .main-content {
             flex: 1;
-            margin-right: 270px;
-            padding: 40px 30px;
+            margin-right: 300px;
+            padding: 30px;
             transition: margin 0.4s;
+            min-height: 100vh;
         }
 
-        /* ====== أقسام الصفحة ====== */
-        .page-section {
+        /* ====== الصفحات ====== */
+        .page {
             display: none;
-            animation: fadeIn 0.6s ease;
+            animation: fadeSlide 0.5s ease;
         }
 
-        .page-section.active {
+        .page.active {
             display: block;
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeSlide {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* ====== بطاقات المحتوى ====== */
+        /* ====== الصفحة الرئيسية (ثابتة) ====== */
+        #home {
+            display: block !important;
+        }
+
+        /* ====== رأس الصفحة ====== */
+        .page-header {
+            background: var(--bg-header);
+            padding: 20px 30px;
+            border-radius: 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s;
+        }
+
+        .page-header h1 {
+            color: var(--text-secondary);
+            font-weight: 300;
+            font-size: 28px;
+            transition: color 0.4s;
+        }
+
+        .page-header h1 i {
+            color: #e7628a;
+            margin-left: 12px;
+        }
+
+        [data-theme="dark"] .page-header h1 i {
+            color: #e887a8;
+        }
+
+        /* ====== البطاقات ====== */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -254,18 +345,12 @@
             padding: 22px 20px;
             box-shadow: 0 10px 30px var(--shadow-color);
             border: 1px solid var(--border-color);
-            transition: 0.3s;
-            backdrop-filter: blur(2px);
+            transition: all 0.3s;
         }
 
         .card:hover {
             transform: translateY(-6px);
             box-shadow: 0 18px 40px var(--shadow-hover);
-            border-color: #fbc0d0;
-        }
-
-        [data-theme="dark"] .card:hover {
-            border-color: #6a4a5a;
         }
 
         .card h3 {
@@ -286,31 +371,11 @@
             color: #e887a8;
         }
 
-        .card p, .card li {
+        .card p {
             color: var(--text-primary);
             line-height: 1.8;
             font-size: 15px;
             transition: color 0.4s;
-        }
-
-        .card ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .card ul li {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .card ul li:last-child {
-            border: none;
-        }
-
-        .card ul li i {
-            color: #e887a8;
-            margin-left: 10px;
-            width: 20px;
         }
 
         .btn-soft {
@@ -327,8 +392,119 @@
         }
 
         .btn-soft:hover {
-            transform: scale(1.03);
+            transform: scale(1.05);
             opacity: 0.85;
+        }
+
+        /* ====== أدوات إضافية ====== */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px var(--shadow-color);
+        }
+
+        .tool-card .number {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--text-secondary);
+            margin: 10px 0;
+        }
+
+        .tool-card .label {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .tool-card .btn-icon {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 5px;
+        }
+
+        .tool-card .btn-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* ====== دعاء اليوم ====== */
+        .duaa-card {
+            background: var(--bg-card);
+            border-radius: 30px;
+            padding: 25px;
+            border: 2px solid var(--border-color);
+            margin-top: 20px;
+            text-align: center;
+            transition: all 0.4s;
+        }
+
+        .duaa-card .duaa-text {
+            font-size: 20px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+
+        /* ====== ملاحظات سريعة ====== */
+        .notes-area {
+            width: 100%;
+            min-height: 100px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 20px;
+            padding: 15px;
+            color: var(--text-primary);
+            font-size: 15px;
+            resize: vertical;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .notes-area:focus {
+            outline: none;
+            border-color: #d4628a;
+        }
+
+        /* ====== شريط تقدم القرآن ====== */
+        .progress-container {
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-bar .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d4628a, #f7a1c4);
+            border-radius: 20px;
+            transition: width 0.5s;
+            width: 0%;
         }
 
         /* ====== تذييل ====== */
@@ -339,40 +515,14 @@
             font-size: 14px;
             border-top: 1px solid var(--footer-border);
             padding-top: 25px;
-            transition: color 0.4s, border-color 0.4s;
+            transition: all 0.4s;
         }
 
-        /* ====== رأس الصفحة ====== */
-        .page-header {
-            background: var(--bg-header);
-            padding: 20px 30px;
-            border-radius: 40px;
-            margin-bottom: 30px;
-            border: 1px solid var(--border-color);
-            transition: background 0.4s, border-color 0.4s;
-        }
-
-        .page-header h1 {
-            color: var(--text-secondary);
-            font-weight: 300;
-            font-size: 28px;
-            transition: color 0.4s;
-        }
-
-        .page-header h1 i {
-            color: #e7628a;
-            margin-left: 12px;
-        }
-
-        [data-theme="dark"] .page-header h1 i {
-            color: #e887a8;
-        }
-
-        /* ====== جعل التصميم متجاوب ====== */
+        /* ====== متجاوب ====== */
         @media screen and (max-width: 768px) {
             .sidebar {
                 transform: translateX(100%);
-                width: 75%;
+                width: 85%;
                 border-radius: 0;
             }
 
@@ -386,18 +536,15 @@
 
             .main-content {
                 margin-right: 0;
-                padding: 70px 18px 30px;
+                padding: 70px 15px 30px;
             }
 
-            .theme-toggle {
-                top: 70px;
-                left: 18px;
-                padding: 8px 14px;
-                font-size: 14px;
+            .theme-toggle-sidebar {
+                margin-top: 10px;
             }
         }
 
-        /* ====== شريط التمرير ====== */
+        /* ====== سكرول ====== */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -410,60 +557,75 @@
             border-radius: 10px;
         }
 
-        /* ====== تحسين النصوص في الوضع الداكن ====== */
-        [data-theme="dark"] .page-section p:not(.footer-note) {
+        /* ====== تنسيق النصوص في الدارك ====== */
+        [data-theme="dark"] .page p:not(.footer-note) {
             color: var(--text-light);
         }
 
-        [data-theme="dark"] .sidebar ul li a {
-            color: #f0d0dc;
-        }
-
-        [data-theme="dark"] .sidebar ul li a:hover {
-            color: #ffd8e8;
+        [data-theme="dark"] .duaa-text {
+            color: #f0c8d8 !important;
         }
     </style>
 </head>
 <body>
 
-    <!-- ====== زر تبديل الثيم (الوضع الداكن/النهاري) ====== -->
-    <button class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
-        <span id="themeLabel">داكن</span>
-    </button>
-
-    <!-- ====== زر فتح القائمة (للجوال) ====== -->
+    <!-- ====== زر القائمة (للجوال) ====== -->
     <button class="menu-toggle" id="menuToggle">
         <i class="fas fa-bars"></i>
     </button>
 
     <!-- ====== القائمة الجانبية ====== -->
     <nav class="sidebar" id="sidebar">
-        <h2><i class="fas fa-heart"></i> ركن البنات</h2>
-        <ul>
-            <li><a href="#" class="active" data-page="home"><i class="fas fa-home"></i> الرئيسية</a></li>
-            <li><a href="#" data-page="games"><i class="fas fa-gamepad"></i> ألعاب بدون نت</a></li>
-            <li><a href="#" data-page="podcasts"><i class="fas fa-podcast"></i> بودكاست توعية</a></li>
-            <li><a href="#" data-page="religion"><i class="fas fa-mosque"></i> برامج دينية</a></li>
-            <li><a href="#" data-page="quran"><i class="fas fa-quran"></i> القرآن كاملاً</a></li>
-        </ul>
-        <div style="margin-top: 40px; text-align: center; color: var(--sidebar-text); font-size: 13px; opacity: 0.7; transition: color 0.4s;">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-heart"></i> ركن البنات</h2>
+            <p>✨ يومياتكِ في مكان واحد</p>
+        </div>
+
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="#" class="active" data-page="home"><i class="fas fa-home"></i> الرئيسية <span class="badge">ثابت</span></a></li>
+                <li><a href="#" data-page="games"><i class="fas fa-gamepad"></i> ألعاب بدون نت</a></li>
+                <li><a href="#" data-page="podcasts"><i class="fas fa-podcast"></i> بودكاست توعية</a></li>
+                <li><a href="#" data-page="religion"><i class="fas fa-mosque"></i> برامج دينية</a></li>
+                <li><a href="#" data-page="quran"><i class="fas fa-quran"></i> القرآن كاملاً</a></li>
+                <li><a href="#" data-page="tools"><i class="fas fa-tools"></i> أدواتي</a></li>
+            </ul>
+        </div>
+
+        <!-- ====== زر تبديل الثيم داخل القائمة ====== -->
+        <div class="theme-toggle-sidebar" id="themeToggle">
+            <span class="toggle-label">
+                <i class="fas fa-moon" id="themeIcon"></i>
+                <span id="themeLabel">داكن</span>
+            </span>
+            <span class="toggle-switch"></span>
+        </div>
+
+        <div style="text-align: center; margin-top: 15px; color: var(--sidebar-text); font-size: 12px; opacity: 0.6;">
             <i class="fas fa-heart" style="color: #e7628a;"></i> مصمم خصيصاً لكِ
         </div>
     </nav>
 
     <!-- ====== المحتوى الرئيسي ====== -->
-    <div class="main-content" id="mainContent">
+    <div class="main-content">
 
-        <!-- ====== الصفحة الرئيسية ====== -->
-        <div id="home" class="page-section active">
+        <!-- ====== الصفحة الرئيسية (ثابتة) ====== -->
+        <div id="home" class="page active">
             <div class="page-header">
                 <h1><i class="fas fa-sparkles"></i> أهلاً بكِ في يومياتكِ</h1>
             </div>
-            <p style="font-size: 18px; margin-bottom: 20px; color: var(--text-light); transition: color 0.4s;">
+            <p style="font-size: 18px; margin-bottom: 20px; color: var(--text-light);">
                 <i class="fas fa-chevron-left" style="color:#d4628a;"></i> 
                 اختاري من القائمة الجانبية ما تحبين فعله اليوم ♡
             </p>
+
+            <!-- دعاء اليوم -->
+            <div class="duaa-card">
+                <h3><i class="fas fa-hands-praying"></i> دعاء اليوم</h3>
+                <p class="duaa-text">"اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً"</p>
+                <button class="btn-soft" onclick="changeDuaa()">دعاء آخر</button>
+            </div>
+
             <div class="card-grid">
                 <div class="card"><h3><i class="fas fa-gamepad"></i> ألعاب</h3><p>ألعاب مسلية بدون إنترنت لتضييع الوقت بطريقة ممتعة.</p></div>
                 <div class="card"><h3><i class="fas fa-podcast"></i> بودكاست</h3><p>بودكاست توعوي مفيد في مختلف المجالات.</p></div>
@@ -475,8 +637,8 @@
             </div>
         </div>
 
-        <!-- ====== قسم الألعاب ====== -->
-        <div id="games" class="page-section">
+        <!-- ====== صفحة الألعاب ====== -->
+        <div id="games" class="page">
             <div class="page-header">
                 <h1><i class="fas fa-gamepad"></i> ألعاب بدون نت</h1>
             </div>
@@ -487,8 +649,8 @@
             </div>
         </div>
 
-        <!-- ====== قسم البودكاست ====== -->
-        <div id="podcasts" class="page-section">
+        <!-- ====== صفحة البودكاست ====== -->
+        <div id="podcasts" class="page">
             <div class="page-header">
                 <h1><i class="fas fa-podcast"></i> بودكاست توعية</h1>
             </div>
@@ -499,8 +661,8 @@
             </div>
         </div>
 
-        <!-- ====== قسم البرامج الدينية ====== -->
-        <div id="religion" class="page-section">
+        <!-- ====== صفحة البرامج الدينية ====== -->
+        <div id="religion" class="page">
             <div class="page-header">
                 <h1><i class="fas fa-mosque"></i> برامج دينية</h1>
             </div>
@@ -512,101 +674,165 @@
             </div>
         </div>
 
-        <!-- ====== قسم القرآن ====== -->
-        <div id="quran" class="page-section">
+        <!-- ====== صفحة القرآن ====== -->
+        <div id="quran" class="page">
             <div class="page-header">
-                <h1><i class="fas fa-quran"></i> القرآن الكريم - بصوت شيوخ</h1>
+                <h1><i class="fas fa-quran"></i> القرآن الكريم</h1>
             </div>
-            <div class="card-grid">
+            <!-- شريط تقدم -->
+            <div class="progress-container">
+                <div style="display:flex; justify-content:space-between; color:var(--text-light); font-size:14px;">
+                    <span>تقدمك في الختمة</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+                </div>
+                <button class="btn-soft" onclick="updateProgress()" style="margin-top:10px;">
+                    <i class="fas fa-plus"></i> أضف جزء
+                </button>
+            </div>
+            <div class="card-grid" style="margin-top:25px;">
                 <div class="card"><h3><i class="fas fa-microphone-alt"></i> الشيخ عبدالباسط</h3><p>المصحف المجود كاملاً برواية حفص.</p><button class="btn-soft"><i class="fas fa-play"></i> استمعي</button></div>
                 <div class="card"><h3><i class="fas fa-microphone-alt"></i> الشيخ الحصري</h3><p>تلاوة خاشعة للمصحف كامل.</p><button class="btn-soft"><i class="fas fa-play"></i> استمعي</button></div>
                 <div class="card"><h3><i class="fas fa-microphone-alt"></i> الشيخ المنشاوي</h3><p>تلاوة مجودة بأحلى صوت.</p><button class="btn-soft"><i class="fas fa-play"></i> استمعي</button></div>
-                <div class="card"><h3><i class="fas fa-microphone-alt"></i> الشيخ السديس</h3><p>تلاوة من الحرم المكي بصوت عذب.</p><button class="btn-soft"><i class="fas fa-play"></i> استمعي</button></div>
             </div>
-            <p style="margin-top:25px; padding:15px; border-radius:30px; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); transition: all 0.4s;">
-                <i class="fas fa-info-circle" style="color:#d4628a;"></i>
-                ملاحظة: يمكنك تحميل هذه التلاوات مسبقاً للاستماع بدون نت.
-            </p>
+        </div>
+
+        <!-- ====== صفحة الأدوات ====== -->
+        <div id="tools" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-tools"></i> أدواتي</h1>
+            </div>
+
+            <div class="tool-grid">
+                <!-- عداد التسبيح -->
+                <div class="tool-card">
+                    <h3><i class="fas fa-pray"></i> التسبيح</h3>
+                    <div class="number" id="tasbeehCount">0</div>
+                    <div class="label">سبحان الله</div>
+                    <div>
+                        <button class="btn-icon" onclick="tasbeeh()"><i class="fas fa-plus"></i></button>
+                        <button class="btn-icon" onclick="resetTasbeeh()"><i class="fas fa-undo"></i></button>
+                    </div>
+                </div>
+
+                <!-- مؤقت القراءة -->
+                <div class="tool-card">
+                    <h3><i class="fas fa-clock"></i> مؤقت</h3>
+                    <div class="number" id="timerDisplay">00:00</div>
+                    <div class="label">وقت القراءة</div>
+                    <div>
+                        <button class="btn-icon" onclick="startTimer()"><i class="fas fa-play"></i></button>
+                        <button class="btn-icon" onclick="stopTimer()"><i class="fas fa-stop"></i></button>
+                        <button class="btn-icon" onclick="resetTimer()"><i class="fas fa-undo"></i></button>
+                    </div>
+                </div>
+
+                <!-- عدد الأجزاء المحفوظة -->
+                <div class="tool-card">
+                    <h3><i class="fas fa-book"></i> حفظ القرآن</h3>
+                    <div class="number" id="savedParts">0</div>
+                    <div class="label">أجزاء محفوظة</div>
+                    <div>
+                        <button class="btn-icon" onclick="addSavedPart()"><i class="fas fa-plus"></i></button>
+                        <button class="btn-icon" onclick="resetSavedParts()"><i class="fas fa-undo"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ملاحظات سريعة -->
+            <div style="margin-top:30px;">
+                <h3 style="color:var(--text-secondary);"><i class="fas fa-pen"></i> ملاحظاتي</h3>
+                <textarea class="notes-area" placeholder="اكتبي ملاحظاتك هنا..." id="notesArea"></textarea>
+                <button class="btn-soft" onclick="saveNotes()"><i class="fas fa-save"></i> حفظ الملاحظات</button>
+            </div>
         </div>
 
     </div>
 
-    <!-- ====== كود الجافا سكريبت ====== -->
     <script>
         (function() {
-            // --- عناصر الثيم ---
+            // ====== 1. تبديل الثيم ======
             const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
             const themeLabel = document.getElementById('themeLabel');
-            const themeIcon = themeToggle.querySelector('i');
 
-            // --- عناصر القائمة والمحتوى ---
-            const sidebar = document.getElementById('sidebar');
-            const menuToggle = document.getElementById('menuToggle');
-            const links = document.querySelectorAll('.sidebar ul li a');
-            const sections = document.querySelectorAll('.page-section');
-
-            // ====== 1. وظيفة تبديل الثيم ======
             function toggleTheme() {
                 const currentTheme = document.documentElement.getAttribute('data-theme');
                 if (currentTheme === 'dark') {
                     document.documentElement.removeAttribute('data-theme');
-                    themeLabel.textContent = 'داكن';
                     themeIcon.className = 'fas fa-moon';
+                    themeLabel.textContent = 'داكن';
                     localStorage.setItem('theme', 'light');
                 } else {
                     document.documentElement.setAttribute('data-theme', 'dark');
-                    themeLabel.textContent = 'نهاري';
                     themeIcon.className = 'fas fa-sun';
+                    themeLabel.textContent = 'نهاري';
                     localStorage.setItem('theme', 'dark');
                 }
             }
 
-            // ====== 2. تحميل الثيم المخزن ======
             function loadTheme() {
                 const savedTheme = localStorage.getItem('theme');
                 if (savedTheme === 'dark') {
                     document.documentElement.setAttribute('data-theme', 'dark');
-                    themeLabel.textContent = 'نهاري';
                     themeIcon.className = 'fas fa-sun';
+                    themeLabel.textContent = 'نهاري';
                 } else {
                     document.documentElement.removeAttribute('data-theme');
-                    themeLabel.textContent = 'داكن';
                     themeIcon.className = 'fas fa-moon';
+                    themeLabel.textContent = 'داكن';
                 }
             }
 
-            // ====== 3. وظيفة تبديل الأقسام ======
-            function switchPage(pageId) {
-                sections.forEach(sec => sec.classList.remove('active'));
-                const target = document.getElementById(pageId);
-                if (target) target.classList.add('active');
-
-                links.forEach(link => link.classList.remove('active'));
-                const activeLink = Array.from(links).find(link => link.dataset.page === pageId);
-                if (activeLink) activeLink.classList.add('active');
-
-                if (window.innerWidth <= 768) {
-                    sidebar.classList.remove('open');
-                    const icon = menuToggle.querySelector('i');
-                    if (icon) icon.className = 'fas fa-bars';
-                }
-            }
-
-            // ====== 4. الأحداث (Event Listeners) ======
-
-            // تبديل الثيم
             themeToggle.addEventListener('click', toggleTheme);
+            loadTheme();
 
-            // روابط القائمة
+            // ====== 2. التنقل بين الصفحات (مع تثبيت الرئيسية) ======
+            const links = document.querySelectorAll('.sidebar-nav ul li a');
+            const pages = document.querySelectorAll('.page');
+
             links.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const page = this.dataset.page;
-                    if (page) switchPage(page);
+                    const pageId = this.dataset.page;
+
+                    // إخفاء كل الصفحات ما عدا الرئيسية
+                    pages.forEach(page => {
+                        if (page.id === 'home') {
+                            // الرئيسية تبقى ظاهرة دائماً
+                            page.classList.add('active');
+                        } else {
+                            page.classList.remove('active');
+                        }
+                    });
+
+                    // إظهار الصفحة المطلوبة (إذا لم تكن الرئيسية)
+                    if (pageId !== 'home') {
+                        const target = document.getElementById(pageId);
+                        if (target) {
+                            target.classList.add('active');
+                        }
+                    }
+
+                    // تحديث التصنيف النشط
+                    links.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // إغلاق القائمة في الجوال
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('open');
+                        const icon = menuToggle.querySelector('i');
+                        if (icon) icon.className = 'fas fa-bars';
+                    }
                 });
             });
 
-            // زر القائمة (للجوال)
+            // ====== 3. القائمة الجانبية للجوال ======
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menuToggle');
+
             menuToggle.addEventListener('click', function() {
                 sidebar.classList.toggle('open');
                 const icon = this.querySelector('i');
@@ -617,7 +843,6 @@
                 }
             });
 
-            // عند تغيير حجم الشاشة
             window.addEventListener('resize', function() {
                 if (window.innerWidth > 768) {
                     sidebar.classList.remove('open');
@@ -626,16 +851,122 @@
                 }
             });
 
-            // الأزرار الداخلية (تجريبي)
+            // ====== 4. دعاء اليوم ======
+            const duaaList = [
+                '"اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً"',
+                '"اللهم احفظني من بين يدي ومن خلفي وعن يميني وعن شمالي"',
+                '"اللهم إني أعوذ بك من الهم والحزن وأعوذ بك من العجز والكسل"',
+                '"ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار"',
+                '"اللهم أصلح لي ديني الذي هو عصمة أمري وأصلح لي دنياي التي فيها معاشي"'
+            ];
+            let duaaIndex = 0;
+
+            window.changeDuaa = function() {
+                duaaIndex = (duaaIndex + 1) % duaaList.length;
+                document.querySelector('.duaa-text').textContent = duaaList[duaaIndex];
+            };
+
+            // ====== 5. عداد التسبيح ======
+            let tasbeehCount = 0;
+            window.tasbeeh = function() {
+                tasbeehCount++;
+                document.getElementById('tasbeehCount').textContent = tasbeehCount;
+                // اهتزاز بسيط
+                const el = document.getElementById('tasbeehCount');
+                el.style.transform = 'scale(1.2)';
+                setTimeout(() => el.style.transform = 'scale(1)', 200);
+            };
+            window.resetTasbeeh = function() {
+                tasbeehCount = 0;
+                document.getElementById('tasbeehCount').textContent = '0';
+            };
+
+            // ====== 6. مؤقت القراءة ======
+            let timerInterval = null;
+            let timerSeconds = 0;
+
+            window.startTimer = function() {
+                if (timerInterval) return;
+                timerInterval = setInterval(() => {
+                    timerSeconds++;
+                    const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+                    const secs = String(timerSeconds % 60).padStart(2, '0');
+                    document.getElementById('timerDisplay').textContent = `${mins}:${secs}`;
+                }, 1000);
+            };
+
+            window.stopTimer = function() {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            };
+
+            window.resetTimer = function() {
+                stopTimer();
+                timerSeconds = 0;
+                document.getElementById('timerDisplay').textContent = '00:00';
+            };
+
+            // ====== 7. شريط تقدم القرآن ======
+            let progressParts = 0;
+
+            window.updateProgress = function() {
+                if (progressParts < 30) {
+                    progressParts++;
+                    const percentage = (progressParts / 30) * 100;
+                    document.getElementById('progressFill').style.width = percentage + '%';
+                    document.getElementById('progressText').textContent = Math.round(percentage) + '%';
+                } else {
+                    alert('🎉 مبارك! أتممتِ حفظ القرآن كاملاً!');
+                }
+            };
+
+            // ====== 8. عدد الأجزاء المحفوظة ======
+            let savedParts = 0;
+
+            window.addSavedPart = function() {
+                if (savedParts < 30) {
+                    savedParts++;
+                    document.getElementById('savedParts').textContent = savedParts;
+                } else {
+                    alert('🎉 حفظتِ القرآن كاملاً! بارك الله فيكِ!');
+                }
+            };
+
+            window.resetSavedParts = function() {
+                savedParts = 0;
+                document.getElementById('savedParts').textContent = '0';
+            };
+
+            // ====== 9. حفظ الملاحظات ======
+            window.saveNotes = function() {
+                const notes = document.getElementById('notesArea').value;
+                localStorage.setItem('userNotes', notes);
+                alert('✅ تم حفظ الملاحظات!');
+            };
+
+            // تحميل الملاحظات المحفوظة
+            const savedNotes = localStorage.getItem('userNotes');
+            if (savedNotes) {
+                document.getElementById('notesArea').value = savedNotes;
+            }
+
+            // ====== 10. الأزرار التجريبية ======
             document.querySelectorAll('.btn-soft').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    alert('هذه مجرد واجهة تجريبية 🎀 يمكنك إضافة الروابط أو المحتوى الفعلي هنا.');
-                });
+                if (!btn.onclick || btn.onclick.toString().includes('changeDuaa') || 
+                    btn.onclick.toString().includes('updateProgress') || 
+                    btn.onclick.toString().includes('saveNotes')) {
+                    // نتركها كما هي
+                } else {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        alert('✨ هذه مجرد واجهة تجريبية 🎀 يمكنك إضافة المحتوى الفعلي هنا.');
+                    });
+                }
             });
 
-            // ====== 5. تشغيل تحميل الثيم عند تحميل الصفحة ======
-            loadTheme();
+            // ====== 11. منع اختفاء الرئيسية عند التحديث ======
+            // التأكد من أن الرئيسية active دائماً
+            document.getElementById('home').classList.add('active');
 
         })();
     </script>
