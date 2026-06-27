@@ -1,1995 +1,644 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0f1117">
-<title>نقطة البيع الذكية</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<style>
-/* ══════════════════════════════════════
-   DESIGN TOKENS — Dark Gold POS Theme
-   ══════════════════════════════════════ */
-:root{
-  --bg:        #0f1117;
-  --surface:   #191c26;
-  --surface2:  #1f2335;
-  --border:    #2a2f45;
-  --border2:   #353c58;
-  --gold:      #f0c040;
-  --gold2:     #f7d96a;
-  --gold3:     #c8930a;
-  --teal:      #2dd4bf;
-  --rose:      #fb7185;
-  --green:     #4ade80;
-  --text:      #e8eaf0;
-  --text2:     #9aa0b8;
-  --text3:     #5a6080;
-  --font:      system-ui,'Segoe UI',Tahoma,Arial,sans-serif;
-  --radius:    14px;
-  --safe-t:    env(safe-area-inset-top,0px);
-  --safe-b:    env(safe-area-inset-bottom,0px);
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ركن البنات - يومياتي</title>
+    <!-- Font Awesome للأيقونات الجميلة -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ====== المتغيرات الأساسية (الثيمات) ====== */
+        :root {
+            --bg-primary: #fef6fb;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-header: linear-gradient(135deg, #fff0f5, #ffe8ef);
+            --text-primary: #4d2e3f;
+            --text-secondary: #7a3b5a;
+            --text-light: #5d3a4b;
+            --border-color: #fce4ec;
+            --shadow-color: rgba(255, 150, 200, 0.15);
+            --shadow-hover: rgba(255, 80, 150, 0.15);
+            --sidebar-bg: linear-gradient(180deg, #ffd1dc, #f8c8dc, #f5b7c5);
+            --sidebar-text: #5a2d44;
+            --link-bg: rgba(255, 255, 255, 0.5);
+            --link-hover: #ffffff;
+            --btn-bg: #ffe2ed;
+            --btn-text: #7a3b5a;
+            --footer-border: #f5dce4;
+            --scroll-track: #fce4ec;
+            --scroll-thumb: #f7b0c8;
+            --input-bg: #ffffff;
+        }
 
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--text);overflow:hidden}
+        /* ====== الثيم الداكن ====== */
+        [data-theme="dark"] {
+            --bg-primary: #1a1118;
+            --bg-secondary: #2a1f26;
+            --bg-card: #33262e;
+            --bg-header: linear-gradient(135deg, #2a1a22, #3d2530);
+            --text-primary: #f0dce6;
+            --text-secondary: #f0c8d8;
+            --text-light: #dbb8c8;
+            --border-color: #4a3340;
+            --shadow-color: rgba(200, 100, 150, 0.1);
+            --shadow-hover: rgba(255, 120, 180, 0.2);
+            --sidebar-bg: linear-gradient(180deg, #2d1a24, #3d2532, #2d1a24);
+            --sidebar-text: #f0d0dc;
+            --link-bg: rgba(255, 200, 220, 0.1);
+            --link-hover: #4a2f3d;
+            --btn-bg: #4a2f3d;
+            --btn-text: #f0d0dc;
+            --footer-border: #3d2a33;
+            --scroll-track: #2a1f26;
+            --scroll-thumb: #5a3a4a;
+            --input-bg: #2a1f26;
+        }
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--surface)}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+        /* ====== الخطوط والألوان الأساسية ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-/* ══ TOP BAR ══ */
-.topbar{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  background:linear-gradient(135deg,#0f1117 0%,#191c26 100%);
-  border-bottom:1px solid var(--border);
-  padding:calc(var(--safe-t) + 8px) 16px 10px;
-  display:flex;align-items:center;gap:10px;
-}
-.topbar-logo{
-  width:38px;height:38px;border-radius:10px;
-  background:linear-gradient(135deg,var(--gold3),var(--gold));
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;flex-shrink:0;
-  box-shadow:0 0 16px rgba(240,192,64,.35);
-}
-.topbar-info{flex:1;min-width:0}
-.topbar-title{font-size:.95rem;font-weight:700;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.topbar-sub{font-size:.62rem;color:var(--text2);margin-top:1px}
-.topbar-actions{display:flex;gap:6px;flex-shrink:0}
-.ico-btn{
-  width:36px;height:36px;border-radius:9px;border:1px solid var(--border2);
-  background:var(--surface2);color:var(--text);font-size:1rem;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-  transition:all .18s;
-}
-.ico-btn:active{background:var(--border);transform:scale(.92)}
+        body {
+            background: var(--bg-primary);
+            display: flex;
+            min-height: 100vh;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
 
-/* ══ TABS ══ */
-.tabbar{
-  position:fixed;bottom:0;left:0;right:0;z-index:200;
-  background:var(--surface);border-top:1px solid var(--border);
-  display:flex;padding-bottom:var(--safe-b);
-}
-.tab{
-  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:9px 4px 7px;border:none;background:none;cursor:pointer;
-  font-family:var(--font);font-size:.58rem;font-weight:700;
-  color:var(--text3);transition:color .2s;position:relative;
-}
-.tab .t-icon{font-size:1.3rem;line-height:1;transition:transform .2s}
-.tab.active{color:var(--gold)}
-.tab.active .t-icon{transform:scale(1.15)}
-.tab.active::after{
-  content:'';position:absolute;top:0;left:25%;right:25%;height:2px;
-  background:var(--gold);border-radius:0 0 3px 3px;
-}
-.tab-badge{
-  position:absolute;top:6px;right:calc(50% - 18px);
-  background:var(--rose);color:#fff;font-size:.5rem;font-weight:800;
-  padding:1px 5px;border-radius:10px;min-width:16px;text-align:center;
-}
+        /* ====== زر تبديل الثيم ====== */
+        .theme-toggle {
+            position: fixed;
+            top: 18px;
+            left: 20px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 10px 18px;
+            font-size: 16px;
+            color: var(--text-secondary);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            z-index: 1200;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
 
-/* ══ CONTENT ══ */
-.content{
-  position:fixed;top:58px;bottom:58px;left:0;right:0;
-  overflow-y:auto;-webkit-overflow-scrolling:touch;
-}
-.page{display:none;padding:14px 14px 16px;animation:fadeUp .25s ease}
-.page.active{display:block}
-.page.flex-page{display:none;flex-direction:column;align-items:center;padding:14px 12px 16px}
-.page.flex-page.active{display:flex}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.25);
+        }
 
-/* ══ CARDS ══ */
-.card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);padding:16px;margin-bottom:12px;
-  box-shadow:0 4px 20px rgba(0,0,0,.3);
-}
-.card-title{
-  font-size:.68rem;font-weight:800;color:var(--text2);
-  letter-spacing:.08em;text-transform:uppercase;
-  margin-bottom:13px;display:flex;align-items:center;
-  justify-content:space-between;gap:8px;
-}
-.card-title .ct-icon{
-  width:26px;height:26px;border-radius:7px;
-  display:flex;align-items:center;justify-content:center;font-size:.9rem;
-  background:var(--surface2);border:1px solid var(--border2);
-}
-.card-title .ct-left{display:flex;align-items:center;gap:8px}
+        .theme-toggle i {
+            font-size: 20px;
+            color: #d4628a;
+        }
 
-/* ══ INPUTS ══ */
-.fg{margin-bottom:10px}
-.fg:last-child{margin-bottom:0}
-.fg label{
-  display:block;font-size:.64rem;font-weight:700;
-  color:var(--text3);margin-bottom:5px;letter-spacing:.05em;
-}
-input,textarea,select{
-  width:100%;padding:11px 13px;
-  background:var(--surface2);border:1.5px solid var(--border);
-  border-radius:10px;font-family:var(--font);font-size:.9rem;
-  color:var(--text);direction:rtl;
-  -webkit-appearance:none;appearance:none;
-  transition:border-color .18s,box-shadow .18s;
-}
-input:focus,textarea:focus,select:focus{
-  outline:none;border-color:var(--gold3);
-  box-shadow:0 0 0 3px rgba(200,147,10,.18);
-}
-input::placeholder,textarea::placeholder{color:var(--text3)}
-textarea{resize:none}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+        [data-theme="dark"] .theme-toggle i {
+            color: #f0a0c0;
+        }
 
-/* ══ SELECT CUSTOM ══ */
-.sel-wrap{position:relative}
-.sel-wrap::after{
-  content:'▾';position:absolute;left:12px;top:50%;transform:translateY(-50%);
-  color:var(--text3);font-size:.8rem;pointer-events:none;
-}
+        /* ====== القائمة الجانبية (Drawer) ====== */
+        .sidebar {
+            width: 250px;
+            background: var(--sidebar-bg);
+            padding: 30px 15px;
+            box-shadow: 4px 0 15px var(--shadow-color);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            transition: transform 0.4s ease-in-out, background 0.4s ease;
+            z-index: 1000;
+            border-radius: 0 0 0 30px;
+            overflow-y: auto;
+        }
 
-/* ══ BUTTONS ══ */
-.btn{
-  padding:12px 18px;border:none;border-radius:11px;
-  font-family:var(--font);font-size:.88rem;font-weight:700;
-  cursor:pointer;display:inline-flex;align-items:center;
-  justify-content:center;gap:7px;transition:all .18s;
-  -webkit-appearance:none;
-}
-.btn:active{transform:scale(.95)}
-.btn-gold{
-  background:linear-gradient(135deg,var(--gold3),var(--gold));
-  color:#1a1200;box-shadow:0 4px 18px rgba(240,192,64,.35);
-}
-.btn-ghost{background:var(--surface2);color:var(--text2);border:1.5px solid var(--border2)}
-.btn-danger{background:rgba(251,113,133,.12);color:var(--rose);border:1.5px solid rgba(251,113,133,.25)}
-.btn-teal{background:rgba(45,212,191,.1);color:var(--teal);border:1.5px solid rgba(45,212,191,.25)}
-.btn-sm{padding:7px 11px;font-size:.75rem;border-radius:8px}
-.btn-full{width:100%}
-.btn-icon{width:36px;height:36px;padding:0;border-radius:9px}
+        .sidebar.hidden {
+            transform: translateX(100%);
+        }
 
-/* ══ ITEM CARD ══ */
-.item-card{
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:12px;padding:12px;margin-bottom:8px;
-  position:relative;transition:border-color .18s;
-}
-.item-card:focus-within{border-color:var(--gold3)}
-.item-card .ic-top{display:flex;gap:8px;margin-bottom:9px;align-items:center}
-.item-card .ic-nums{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}
-.ic-label{font-size:.62rem;color:var(--text3);margin-bottom:4px;font-weight:700;letter-spacing:.04em}
-.ic-chip{
-  background:linear-gradient(135deg,var(--gold3),var(--gold));
-  color:#1a1200;padding:10px 11px;border-radius:9px;
-  font-size:.84rem;font-weight:800;text-align:center;
-  min-width:80px;white-space:nowrap;align-self:flex-end;
-  box-shadow:0 2px 10px rgba(240,192,64,.25);
-}
-.item-num-badge{
-  position:absolute;top:-6px;right:-6px;
-  width:20px;height:20px;border-radius:50%;
-  background:var(--gold3);color:#fff;font-size:.6rem;font-weight:800;
-  display:flex;align-items:center;justify-content:center;
-}
+        .sidebar h2 {
+            color: var(--sidebar-text);
+            font-weight: 300;
+            font-size: 24px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            letter-spacing: 1px;
+            transition: color 0.4s;
+        }
 
-/* ══ CATEGORY PILLS ══ */
-.cats{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:none}
-.cats::-webkit-scrollbar{display:none}
-.cat-pill{
-  flex-shrink:0;padding:6px 14px;border-radius:20px;
-  border:1.5px solid var(--border2);background:var(--surface2);
-  color:var(--text2);font-size:.75rem;font-weight:700;cursor:pointer;
-  transition:all .18s;white-space:nowrap;
-}
-.cat-pill.active{background:var(--gold3);border-color:var(--gold3);color:#fff;box-shadow:0 2px 10px rgba(200,147,10,.35)}
+        .sidebar h2 i {
+            color: #d4628a;
+            margin-left: 10px;
+        }
 
-/* ══ QUICK ADD GRID ══ */
-.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.quick-item{
-  background:var(--surface2);border:1.5px solid var(--border);
-  border-radius:12px;padding:10px 8px;cursor:pointer;text-align:center;
-  transition:all .18s;display:flex;flex-direction:column;gap:4px;
-}
-.quick-item:active{transform:scale(.94);border-color:var(--gold3)}
-.quick-item .qi-icon{font-size:1.5rem}
-.quick-item .qi-name{font-size:.65rem;color:var(--text2);font-weight:700;line-height:1.2}
-.quick-item .qi-price{font-size:.72rem;color:var(--gold);font-weight:800}
+        [data-theme="dark"] .sidebar h2 i {
+            color: #e887a8;
+        }
 
-/* ══ TOTALS ══ */
-.tot-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:8px 0;border-bottom:1px solid var(--border);
-  font-size:.88rem;
-}
-.tot-row:last-child{border-bottom:none}
-.tot-row.grand{
-  font-size:1.15rem;font-weight:900;color:var(--gold);
-  border-top:2px solid var(--gold3);border-bottom:none;
-  margin-top:6px;padding-top:10px;
-}
-.tot-label{color:var(--text2);display:flex;align-items:center;gap:8px}
-.tot-val{font-weight:700}
-.mini-input{
-  width:52px;padding:4px 6px;font-size:.78rem;
-  text-align:center;direction:ltr;border-radius:7px;
-  background:var(--surface);border:1px solid var(--border2);
-  color:var(--text);font-family:var(--font);
-}
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
 
-/* ══ STATS STRIP ══ */
-.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.stat-box{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:12px;padding:12px 10px;text-align:center;
-}
-.stat-box .sb-val{font-size:1.1rem;font-weight:900;color:var(--gold)}
-.stat-box .sb-label{font-size:.58rem;color:var(--text3);margin-top:2px;font-weight:700;letter-spacing:.04em}
+        .sidebar ul li {
+            margin: 18px 0;
+        }
 
-/* ══ HISTORY LIST ══ */
-.hist-item{
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:12px;padding:13px;margin-bottom:8px;
-  display:flex;align-items:center;gap:12px;cursor:pointer;
-  transition:border-color .18s;
-}
-.hist-item:active{border-color:var(--gold3)}
-.hist-icon{
-  width:40px;height:40px;border-radius:10px;
-  background:linear-gradient(135deg,rgba(200,147,10,.2),rgba(240,192,64,.12));
-  border:1px solid rgba(240,192,64,.2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;flex-shrink:0;
-}
-.hist-info{flex:1;min-width:0}
-.hist-num{font-size:.85rem;font-weight:700;color:var(--text)}
-.hist-meta{font-size:.65rem;color:var(--text3);margin-top:2px}
-.hist-amt{font-size:.95rem;font-weight:800;color:var(--gold);white-space:nowrap}
-.hist-badge{
-  font-size:.6rem;padding:3px 8px;border-radius:10px;font-weight:700;
-  margin-top:3px;display:inline-block;
-}
-.hb-paid{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.2)}
-.hb-pending{background:rgba(251,113,133,.12);color:var(--rose);border:1px solid rgba(251,113,133,.2)}
+        .sidebar ul li a {
+            display: block;
+            padding: 12px 18px;
+            color: var(--sidebar-text);
+            background: var(--link-bg);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 17px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+        }
 
-/* ══ RECEIPT PREVIEW ══ */
-.receipt-outer{
-  width:100%;max-width:320px;
-  filter:drop-shadow(0 8px 32px rgba(0,0,0,.5)) drop-shadow(0 2px 8px rgba(240,192,64,.08));
-}
-.receipt-teeth{
-  height:14px;width:100%;
-  background:radial-gradient(circle at 50% 0%,var(--bg) 6px,#fefdf8 6px) 0 0/20px 14px repeat-x;
-}
-.receipt-teeth.bottom{
-  background:radial-gradient(circle at 50% 100%,var(--bg) 6px,#fefdf8 6px) 0 0/20px 14px repeat-x;
-}
-.receipt-body{
-  background:#fefdf8;padding:16px 20px 18px;
-  font-family:'Courier New','Lucida Console',monospace;
-  font-size:11.5px;line-height:1.7;color:#1a1a1a;direction:rtl;
-  width:100%;
-}
-.r-logo-area{text-align:center;margin-bottom:6px}
-.r-logo-circle{
-  width:44px;height:44px;border-radius:50%;
-  background:linear-gradient(135deg,#c8930a,#f0c040);
-  display:inline-flex;align-items:center;justify-content:center;
-  font-size:1.3rem;margin-bottom:4px;
-}
-.r-store{font-size:16px;font-weight:900;text-align:center;font-family:var(--font)}
-.r-sub{text-align:center;font-size:9.5px;color:#666;line-height:1.5}
-.r-stars{text-align:center;color:#bbb;margin:7px 0;font-size:8.5px;letter-spacing:5px}
-.r-meta{display:flex;justify-content:space-between;font-size:10px;color:#555}
-.r-hr{border:none;border-top:1px dashed #ccc;margin:7px 0}
-.r-hr-solid{border:none;border-top:2px solid #222;margin:7px 0}
-.r-th{display:grid;grid-template-columns:1fr 32px 48px 54px;font-size:9px;font-weight:700;color:#777;gap:2px;padding-bottom:3px}
-.r-row{display:grid;grid-template-columns:1fr 32px 48px 54px;font-size:11px;gap:2px;padding:3px 0;border-bottom:1px dotted #e0e0e0}
-.r-row:last-child{border-bottom:none}
-.r-row .rc{text-align:center;color:#666}
-.r-row .rl{text-align:left;direction:ltr}
-.r-row .rlb{text-align:left;direction:ltr;font-weight:700}
-.r-row .rn{font-weight:600;font-size:10.5px;word-break:break-all}
-.r-totrow{display:flex;justify-content:space-between;font-size:10.5px;padding:2px 0;color:#444}
-.r-grand{display:flex;justify-content:space-between;font-size:15px;font-weight:900;padding:6px 0 4px;font-family:var(--font)}
-.r-payrow{display:flex;justify-content:space-between;font-size:10px;color:#666;padding:1.5px 0}
-.r-bar{text-align:center;font-size:18px;letter-spacing:3px;margin:8px 0 3px;color:#111}
-.r-barnum{text-align:center;font-size:8.5px;color:#bbb;letter-spacing:.15em}
-.r-thanks{text-align:center;font-size:10px;color:#666;font-family:var(--font);line-height:1.5;margin-top:7px}
-.r-qr-placeholder{
-  text-align:center;margin:8px auto;
-  width:54px;height:54px;border:2px solid #ccc;border-radius:6px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.8rem;
-}
+        .sidebar ul li a i {
+            margin-left: 12px;
+            width: 22px;
+            color: #b34b6e;
+        }
 
-/* ══ PRINT BAR ══ */
-.pbar{
-  position:fixed;bottom:58px;left:0;right:0;z-index:150;
-  background:var(--surface);border-top:1px solid var(--border);
-  padding:10px 14px;display:none;gap:8px;
-  box-shadow:0 -4px 20px rgba(0,0,0,.3);
-}
-.pbar.on{display:flex}
+        [data-theme="dark"] .sidebar ul li a i {
+            color: #e887a8;
+        }
 
-/* ══ MODAL ══ */
-.modal-bg{
-  position:fixed;inset:0;z-index:500;
-  background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
-  display:none;align-items:flex-end;justify-content:center;
-}
-.modal-bg.open{display:flex}
-.modal{
-  background:var(--surface);border-radius:20px 20px 0 0;
-  padding:20px 18px calc(var(--safe-b) + 20px);
-  width:100%;max-width:500px;
-  border-top:1px solid var(--border);
-  animation:slideUp .28s cubic-bezier(.34,1.56,.64,1);
-  max-height:90vh;overflow-y:auto;
-}
-@keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
-.modal-handle{width:40px;height:4px;border-radius:2px;background:var(--border2);margin:0 auto 16px}
-.modal-title{font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:16px;text-align:center}
+        .sidebar ul li a:hover,
+        .sidebar ul li a.active {
+            background: var(--link-hover);
+            color: #9f3f60;
+            box-shadow: 0 6px 15px rgba(255, 20, 100, 0.15);
+            border-color: #f7a1c4;
+            transform: scale(1.02);
+        }
 
-/* ══ TOGGLE ══ */
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
-.toggle-row:last-child{border-bottom:none}
-.toggle-info .tl{font-size:.85rem;font-weight:600;color:var(--text)}
-.toggle-info .ts{font-size:.68rem;color:var(--text3);margin-top:2px}
-.toggle{
-  width:44px;height:24px;border-radius:12px;
-  background:var(--border2);position:relative;cursor:pointer;
-  transition:background .2s;flex-shrink:0;border:none;
-}
-.toggle.on{background:var(--gold3)}
-.toggle::after{
-  content:'';position:absolute;top:2px;right:2px;
-  width:20px;height:20px;border-radius:50%;background:#fff;
-  transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.3);
-}
-.toggle.on::after{transform:translateX(-20px)}
+        [data-theme="dark"] .sidebar ul li a:hover,
+        [data-theme="dark"] .sidebar ul li a.active {
+            color: #f0c8d8;
+            border-color: #8a5a72;
+        }
 
-/* ══ COLOR PICKER ══ */
-.color-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.color-dot{
-  width:28px;height:28px;border-radius:50%;cursor:pointer;
-  border:2px solid transparent;transition:all .18s;
-}
-.color-dot.active{border-color:#fff;transform:scale(1.2);box-shadow:0 0 8px rgba(255,255,255,.4)}
+        /* ====== زر فتح/إغلاق القائمة (للشاشات الصغيرة) ====== */
+        .menu-toggle {
+            position: fixed;
+            top: 18px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            color: var(--text-secondary);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            z-index: 1100;
+            cursor: pointer;
+            transition: 0.3s;
+            display: none;
+        }
 
-/* ══ INSTALL BANNER ══ */
-.install-bar{
-  background:linear-gradient(135deg,rgba(200,147,10,.15),rgba(240,192,64,.08));
-  border:1px solid rgba(240,192,64,.25);border-radius:var(--radius);
-  padding:12px 14px;margin-bottom:12px;
-  display:none;align-items:center;gap:10px;
-}
-.install-bar.show{display:flex}
-.ib-icon{font-size:1.6rem;flex-shrink:0}
-.ib-txt{flex:1;min-width:0}
-.ib-t{font-size:.82rem;font-weight:700;color:var(--gold)}
-.ib-s{font-size:.65rem;color:var(--text3);margin-top:1px}
-.ib-btn{background:var(--gold3);color:#fff;border:none;border-radius:8px;padding:8px 13px;font-family:var(--font);font-weight:700;font-size:.78rem;cursor:pointer;white-space:nowrap}
+        .menu-toggle:hover {
+            transform: rotate(15deg);
+        }
 
-/* ══ EMPTY STATE ══ */
-.empty{text-align:center;padding:28px 16px;color:var(--text3)}
-.empty .ei{font-size:2.5rem;margin-bottom:8px;opacity:.6}
-.empty .et{font-size:.88rem}
+        /* ====== المحتوى الرئيسي ====== */
+        .main-content {
+            flex: 1;
+            margin-right: 270px;
+            padding: 40px 30px;
+            transition: margin 0.4s;
+        }
 
-/* ══ TOAST ══ */
-.toast{
-  position:fixed;bottom:75px;left:50%;
-  transform:translateX(-50%) translateY(50px);
-  background:var(--surface2);color:var(--text);
-  border:1px solid var(--border2);
-  padding:10px 20px;border-radius:22px;
-  font-size:.84rem;font-weight:600;
-  box-shadow:0 6px 24px rgba(0,0,0,.4);
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-  z-index:999;pointer-events:none;white-space:nowrap;
-}
-.toast.show{transform:translateX(-50%) translateY(0)}
+        /* ====== أقسام الصفحة ====== */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
 
-/* ══ SEARCH BAR ══ */
-.search-bar{
-  position:relative;margin-bottom:12px;
-}
-.search-bar input{padding-right:40px}
-.search-bar .si{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:1rem;pointer-events:none}
+        .page-section.active {
+            display: block;
+        }
 
-/* ══ DIVIDER ══ */
-.divider{display:flex;align-items:center;gap:10px;margin:12px 0;color:var(--text3);font-size:.68rem;font-weight:700}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
-/* ══ TOOLS PAGE ══ */
-.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.tools-grid.full{grid-template-columns:1fr}
-.clock-display{
-  text-align:center;padding:18px 10px 14px;
-}
-.clock-time{
-  font-size:2.8rem;font-weight:900;color:var(--gold);
-  letter-spacing:.05em;line-height:1;font-variant-numeric:tabular-nums;
-  font-family:'Courier New',monospace;
-}
-.clock-secs{font-size:1.6rem;color:var(--gold3)}
-.clock-date-h{font-size:.78rem;color:var(--text2);margin-top:6px;font-weight:700}
-.clock-date-m{font-size:.7rem;color:var(--text3);margin-top:3px}
-.calc-display{
-  background:var(--surface2);border:1.5px solid var(--border);
-  border-radius:12px;padding:14px 16px;margin-bottom:12px;
-  min-height:60px;text-align:left;direction:ltr;
-  position:relative;
-}
-.calc-expr{font-size:.75rem;color:var(--text3);min-height:16px;word-break:break-all}
-.calc-result{font-size:1.9rem;font-weight:900;color:var(--gold);word-break:break-all;font-variant-numeric:tabular-nums}
-.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.cb{
-  padding:14px 8px;border:none;border-radius:10px;
-  font-family:var(--font);font-size:1rem;font-weight:700;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:all .15s;-webkit-appearance:none;
-  background:var(--surface2);color:var(--text);border:1px solid var(--border2);
-}
-.cb:active{transform:scale(.91)}
-.cb.op{background:rgba(200,147,10,.15);color:var(--gold);border-color:rgba(200,147,10,.3)}
-.cb.eq{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#1a1200;grid-column:span 1;box-shadow:0 3px 12px rgba(240,192,64,.3)}
-.cb.ac{background:rgba(251,113,133,.12);color:var(--rose);border-color:rgba(251,113,133,.25)}
-.cb.span2{grid-column:span 2}
-.currency-card{padding:14px 16px}
-.egp-rate-big{font-size:1.5rem;font-weight:900;color:var(--teal);text-align:center;padding:10px 0 5px}
-.egp-sub{font-size:.68rem;color:var(--text3);text-align:center;margin-bottom:12px}
-.conv-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.conv-row input{flex:1;padding:10px 12px;font-size:.95rem}
-.conv-arrow{color:var(--text3);font-size:1rem;flex-shrink:0}
-.conv-result{
-  background:var(--surface2);border:1px solid var(--border2);
-  border-radius:10px;padding:10px 12px;
-  font-size:1.1rem;font-weight:800;color:var(--gold);
-  text-align:center;margin-top:4px;
-}
-.egp-note{font-size:.6rem;color:var(--text3);text-align:center;margin-top:6px}
-.hijri-display{text-align:center;padding:10px 0 6px}
-.hijri-big{font-size:1.25rem;font-weight:900;color:var(--gold);margin-bottom:4px}
-.hijri-sub{font-size:.72rem;color:var(--text3)}
-.miladi-big{font-size:1.1rem;font-weight:800;color:var(--teal);margin:8px 0 4px}
+        /* ====== بطاقات المحتوى ====== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
 
-/* ══════════════════════════════════════
-   iOS 26 LIQUID GLASS SYSTEM
-   ══════════════════════════════════════ */
+        .card {
+            background: var(--bg-card);
+            border-radius: 30px;
+            padding: 22px 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            transition: 0.3s;
+            backdrop-filter: blur(2px);
+        }
 
-/* Glass tokens */
-:root{
-  --glass-bg:        rgba(255,255,255,0.07);
-  --glass-bg-hover:  rgba(255,255,255,0.13);
-  --glass-border:    rgba(255,255,255,0.18);
-  --glass-border-hi: rgba(255,255,255,0.32);
-  --glass-shadow:    0 8px 32px rgba(0,0,0,0.45), 0 1.5px 0 rgba(255,255,255,0.10) inset;
-  --glass-shadow-sm: 0 4px 16px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.10) inset;
-  --glass-blur:      saturate(180%) blur(18px);
-  --glass-blur-sm:   saturate(160%) blur(12px);
-  --glass-radius:    16px;
-}
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 40px var(--shadow-hover);
+            border-color: #fbc0d0;
+        }
 
-/* ── TOPBAR — glass ── */
-.topbar{
-  background: rgba(15,17,23,0.55) !important;
-  backdrop-filter: var(--glass-blur) !important;
-  -webkit-backdrop-filter: var(--glass-blur) !important;
-  border-bottom: 1px solid var(--glass-border) !important;
-  box-shadow: 0 2px 24px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.08) inset !important;
-}
+        [data-theme="dark"] .card:hover {
+            border-color: #6a4a5a;
+        }
 
-/* ── ICO BUTTONS (top bar icons) — glass ── */
-.ico-btn{
-  background: var(--glass-bg) !important;
-  border: 1px solid var(--glass-border) !important;
-  backdrop-filter: var(--glass-blur-sm) !important;
-  -webkit-backdrop-filter: var(--glass-blur-sm) !important;
-  box-shadow: var(--glass-shadow-sm) !important;
-  border-radius: 12px !important;
-  transition: all .22s cubic-bezier(.34,1.4,.64,1) !important;
-}
-.ico-btn:active{
-  background: var(--glass-bg-hover) !important;
-  transform: scale(.90) !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
-}
+        .card h3 {
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+            transition: color 0.4s;
+        }
 
-/* ── TABBAR — glass ── */
-.tabbar{
-  background: rgba(15,17,23,0.50) !important;
-  backdrop-filter: var(--glass-blur) !important;
-  -webkit-backdrop-filter: var(--glass-blur) !important;
-  border-top: 1px solid var(--glass-border) !important;
-  box-shadow: 0 -4px 24px rgba(0,0,0,0.35), 0 -1px 0 rgba(255,255,255,0.08) inset !important;
-}
+        .card h3 i {
+            margin-left: 12px;
+            color: #d4628a;
+        }
 
-/* ── TAB ITEMS — glass active pill ── */
-.tab{
-  transition: color .2s, background .2s !important;
-  border-radius: 14px !important;
-  margin: 5px 3px !important;
-}
-.tab.active{
-  background: rgba(255,255,255,0.09) !important;
-  border: 1px solid rgba(255,255,255,0.16) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.12) inset !important;
-  color: var(--gold) !important;
-}
-.tab.active::after{
-  display: none !important;
-}
+        [data-theme="dark"] .card h3 i {
+            color: #e887a8;
+        }
 
-/* ── BTN-GHOST — glass ── */
-.btn-ghost{
-  background: var(--glass-bg) !important;
-  border: 1px solid var(--glass-border) !important;
-  backdrop-filter: var(--glass-blur-sm) !important;
-  -webkit-backdrop-filter: var(--glass-blur-sm) !important;
-  box-shadow: var(--glass-shadow-sm) !important;
-  color: var(--text) !important;
-  transition: all .22s cubic-bezier(.34,1.4,.64,1) !important;
-}
-.btn-ghost:active{
-  background: var(--glass-bg-hover) !important;
-  transform: scale(.95) !important;
-}
+        .card p, .card li {
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-size: 15px;
+            transition: color 0.4s;
+        }
 
-/* ── BTN-DANGER — glass red tint ── */
-.btn-danger{
-  background: rgba(251,113,133,0.09) !important;
-  border: 1px solid rgba(251,113,133,0.28) !important;
-  backdrop-filter: var(--glass-blur-sm) !important;
-  -webkit-backdrop-filter: var(--glass-blur-sm) !important;
-  box-shadow: 0 4px 16px rgba(251,113,133,0.12), 0 1px 0 rgba(255,255,255,0.07) inset !important;
-}
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
 
-/* ── BTN-TEAL — glass teal tint ── */
-.btn-teal{
-  background: rgba(45,212,191,0.08) !important;
-  border: 1px solid rgba(45,212,191,0.28) !important;
-  backdrop-filter: var(--glass-blur-sm) !important;
-  -webkit-backdrop-filter: var(--glass-blur-sm) !important;
-  box-shadow: 0 4px 16px rgba(45,212,191,0.10), 0 1px 0 rgba(255,255,255,0.07) inset !important;
-}
+        .card ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-/* ── BTN-GOLD — premium glass gold ── */
-.btn-gold{
-  background: linear-gradient(135deg, rgba(200,147,10,0.85), rgba(240,192,64,0.85)) !important;
-  border: 1px solid rgba(255,222,100,0.40) !important;
-  backdrop-filter: var(--glass-blur-sm) !important;
-  -webkit-backdrop-filter: var(--glass-blur-sm) !important;
-  box-shadow:
-    0 6px 24px rgba(240,192,64,0.30),
-    0 1.5px 0 rgba(255,255,255,0.30) inset,
-    0 -1px 0 rgba(0,0,0,0.20) inset !important;
-  position: relative !important;
-  overflow: hidden !important;
-}
-.btn-gold::before{
-  content:'';
-  position:absolute; top:0; left:0; right:0; height:50%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.20), transparent);
-  border-radius: inherit;
-  pointer-events: none;
-}
-.btn-gold:active{
-  transform: scale(.95) !important;
-  box-shadow: 0 2px 10px rgba(240,192,64,0.20) !important;
-}
+        .card ul li:last-child {
+            border: none;
+        }
 
-/* ── CALCULATOR BUTTONS — glass ── */
-.cb{
-  background: rgba(255,255,255,0.06) !important;
-  border: 1px solid rgba(255,255,255,0.12) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.10) inset !important;
-  transition: all .15s cubic-bezier(.34,1.4,.64,1) !important;
-}
-.cb:active{
-  transform: scale(.88) !important;
-  background: rgba(255,255,255,0.12) !important;
-}
-.cb.op{
-  background: rgba(200,147,10,0.12) !important;
-  border-color: rgba(200,147,10,0.28) !important;
-  box-shadow: 0 2px 8px rgba(200,147,10,0.15), 0 1px 0 rgba(255,255,255,0.10) inset !important;
-}
-.cb.eq{
-  background: linear-gradient(135deg, rgba(200,147,10,0.80), rgba(240,192,64,0.80)) !important;
-  border: 1px solid rgba(255,222,100,0.35) !important;
-  box-shadow: 0 4px 16px rgba(240,192,64,0.25), 0 1px 0 rgba(255,255,255,0.25) inset !important;
-}
-.cb.ac{
-  background: rgba(251,113,133,0.10) !important;
-  border-color: rgba(251,113,133,0.25) !important;
-}
+        .card ul li i {
+            color: #e887a8;
+            margin-left: 10px;
+            width: 20px;
+        }
 
-/* ── INSTALL BUTTON — glass ── */
-.ib-btn{
-  background: rgba(200,147,10,0.75) !important;
-  border: 1px solid rgba(255,222,100,0.35) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  box-shadow: 0 3px 12px rgba(200,147,10,0.25), 0 1px 0 rgba(255,255,255,0.20) inset !important;
-}
+        .btn-soft {
+            display: inline-block;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-top: 12px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-/* ── CAT PILLS — glass ── */
-.cat-pill{
-  background: rgba(255,255,255,0.06) !important;
-  border: 1px solid rgba(255,255,255,0.12) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.08) inset !important;
-  color: var(--text2) !important;
-  transition: all .18s cubic-bezier(.34,1.4,.64,1) !important;
-}
-.cat-pill.active{
-  background: rgba(200,147,10,0.70) !important;
-  border-color: rgba(255,222,100,0.40) !important;
-  color: #fff !important;
-  box-shadow: 0 3px 12px rgba(200,147,10,0.30), 0 1px 0 rgba(255,255,255,0.20) inset !important;
-}
+        .btn-soft:hover {
+            transform: scale(1.03);
+            opacity: 0.85;
+        }
 
-/* ── MODAL — glass ── */
-.modal{
-  background: rgba(25,28,38,0.75) !important;
-  backdrop-filter: saturate(200%) blur(24px) !important;
-  -webkit-backdrop-filter: saturate(200%) blur(24px) !important;
-  border-top: 1px solid var(--glass-border) !important;
-  box-shadow: 0 -8px 40px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.10) inset !important;
-}
+        /* ====== تذييل ====== */
+        .footer-note {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 14px;
+            border-top: 1px solid var(--footer-border);
+            padding-top: 25px;
+            transition: color 0.4s, border-color 0.4s;
+        }
 
-/* ── PBAR (print bar) — glass ── */
-.pbar{
-  background: rgba(15,17,23,0.55) !important;
-  backdrop-filter: var(--glass-blur) !important;
-  -webkit-backdrop-filter: var(--glass-blur) !important;
-  border-top: 1px solid var(--glass-border) !important;
-}
+        /* ====== رأس الصفحة ====== */
+        .page-header {
+            background: var(--bg-header);
+            padding: 20px 30px;
+            border-radius: 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            transition: background 0.4s, border-color 0.4s;
+        }
 
-/* ── TOAST — glass ── */
-.toast{
-  background: rgba(31,35,53,0.80) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.40) !important;
-  position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(20px);
-  z-index:9999;padding:10px 20px;border-radius:24px;
-  font-size:.82rem;font-weight:700;color:var(--text);
-  opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;
-}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+        .page-header h1 {
+            color: var(--text-secondary);
+            font-weight: 300;
+            font-size: 28px;
+            transition: color 0.4s;
+        }
 
-/* ══ EMAIL MODAL ══ */
-.email-field{margin-bottom:12px}
-.email-field label{display:block;font-size:.64rem;font-weight:700;color:var(--text3);margin-bottom:5px;letter-spacing:.05em}
-.email-preview-box{
-  background:var(--surface2);border:1.5px solid var(--border);
-  border-radius:10px;padding:12px 14px;font-size:.78rem;
-  color:var(--text2);line-height:1.7;max-height:130px;overflow-y:auto;
-  white-space:pre-wrap;direction:rtl;
-}
-.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
-.share-card{
-  background:var(--surface2);border:1.5px solid var(--border2);
-  border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;
-  transition:all .18s;
-}
-.share-card:active{transform:scale(.94);border-color:var(--gold3)}
-.share-card .sc-icon{font-size:1.8rem;margin-bottom:6px}
-.share-card .sc-label{font-size:.72rem;font-weight:700;color:var(--text2)}
-.share-card.sc-email{border-color:rgba(45,212,191,.3)}
-.share-card.sc-wa{border-color:rgba(74,222,128,.3)}
-.share-card.sc-copy{border-color:rgba(240,192,64,.3)}
-.share-card.sc-pdf{border-color:rgba(251,113,133,.3)}
+        .page-header h1 i {
+            color: #e7628a;
+            margin-left: 12px;
+        }
 
-/* ══ QUICK EDITOR ══ */
-.qi-edit-row{
-  display:grid;grid-template-columns:2rem 1fr 1fr 5rem auto;
-  gap:6px;align-items:center;margin-bottom:6px;
-}
-.qi-edit-row input{padding:7px 9px;font-size:.78rem}
+        [data-theme="dark"] .page-header h1 i {
+            color: #e887a8;
+        }
 
+        /* ====== جعل التصميم متجاوب ====== */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                transform: translateX(100%);
+                width: 75%;
+                border-radius: 0;
+            }
 
-/* ── PRINT ══ */
-@media print{
-  .topbar,.tabbar,.pbar,.install-bar,#page-store,#page-items,#page-history,#page-settings{display:none!important}
-  body,html{overflow:visible!important;background:#fff!important}
-  .content{position:static!important;overflow:visible!important;top:0!important;bottom:0!important}
-  #page-receipt{display:flex!important;padding:0!important;background:#fff}
-  .receipt-outer{filter:none!important;max-width:100%}
-  .receipt-teeth{display:none}
-}
-</style>
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .main-content {
+                margin-right: 0;
+                padding: 70px 18px 30px;
+            }
+
+            .theme-toggle {
+                top: 70px;
+                left: 18px;
+                padding: 8px 14px;
+                font-size: 14px;
+            }
+        }
+
+        /* ====== شريط التمرير ====== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--scroll-track);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scroll-thumb);
+            border-radius: 10px;
+        }
+
+        /* ====== تحسين النصوص في الوضع الداكن ====== */
+        [data-theme="dark"] .page-section p:not(.footer-note) {
+            color: var(--text-light);
+        }
+
+        [data-theme="dark"] .sidebar ul li a {
+            color: #f0d0dc;
+        }
+
+        [data-theme="dark"] .sidebar ul li a:hover {
+            color: #ffd8e8;
+        }
+    </style>
 </head>
 <body>
 
-<!-- ══ TOP BAR ══ -->
-<div class="topbar">
-  <div class="topbar-logo">🧾</div>
-  <div class="topbar-info">
-    <div class="topbar-title" id="tbTitle">نقطة البيع الذكية</div>
-    <div class="topbar-sub" id="tbSub">✅ يعمل بدون إنترنت</div>
-  </div>
-  <div class="topbar-actions">
-    <div class="ico-btn" onclick="openSettings()" title="الإعدادات">⚙️</div>
-    <div class="ico-btn" onclick="newInvoice()" title="فاتورة جديدة">➕</div>
-  </div>
-</div>
+    <!-- ====== زر تبديل الثيم (الوضع الداكن/النهاري) ====== -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+        <span id="themeLabel">داكن</span>
+    </button>
 
-<!-- ══ CONTENT ══ -->
-<div class="content">
+    <!-- ====== زر فتح القائمة (للجوال) ====== -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
-<!-- ══════ PAGE: HOME (STORE + INVOICE) ══════ -->
-<div class="page active" id="page-home">
-
-  <div id="installBanner" class="install-bar">
-    <div class="ib-icon">📲</div>
-    <div class="ib-txt">
-      <div class="ib-t">ثبّت التطبيق على جوالك</div>
-      <div class="ib-s">يعمل بدون إنترنت تماماً</div>
-    </div>
-    <button class="ib-btn" id="installBtn">تثبيت</button>
-  </div>
-
-  <!-- Stats strip -->
-  <div class="stats-strip">
-    <div class="stat-box"><div class="sb-val" id="statItems">0</div><div class="sb-label">صنف</div></div>
-    <div class="stat-box"><div class="sb-val" id="statSub">0</div><div class="sb-label">قبل الضريبة</div></div>
-    <div class="stat-box"><div class="sb-val" id="statGrand" style="color:var(--green)">0</div><div class="sb-label">الإجمالي</div></div>
-  </div>
-
-  <!-- Store info -->
-  <div class="card">
-    <div class="card-title">
-      <div class="ct-left"><div class="ct-icon">🏪</div> معلومات المتجر</div>
-      <button class="btn btn-ghost btn-sm" onclick="loadStorePreset()">نموذج</button>
-    </div>
-    <div class="fg"><label>اسم المتجر / الشركة</label>
-      <input id="storeName" type="text" placeholder="مثال: بقالة النور" value="بقالة النور"></div>
-    <div class="row2">
-      <div class="fg"><label>العنوان</label><input id="storeAddr" type="text" placeholder="الرياض، شارع..."></div>
-      <div class="fg"><label>الهاتف</label><input id="storePhone" type="text" placeholder="05xxxxxxxx" value="0501234567"></div>
-    </div>
-    <div class="fg"><label>الرقم الضريبي (VAT)</label>
-      <input id="storeTax" type="text" placeholder="300xxxxxxxxxx03" value="300123456700003"></div>
-  </div>
-
-  <!-- Invoice info -->
-  <div class="card">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">📋</div> بيانات الفاتورة</div></div>
-    <div class="row3">
-      <div class="fg"><label>رقم الفاتورة</label><input id="invNum" type="text" value="INV-00247"></div>
-      <div class="fg"><label>الكاشير</label><input id="cashier" type="text" value="محمد"></div>
-      <div class="fg"><label>الطاولة/المنفذ</label><input id="tableNum" type="text" placeholder="1"></div>
-    </div>
-    <div class="row2">
-      <div class="fg"><label>اسم العميل</label><input id="custName" type="text" placeholder="اختياري"></div>
-      <div class="fg"><label>هاتف العميل</label><input id="custPhone" type="text" placeholder="05xxxxxxxx"></div>
-    </div>
-    <div class="fg"><label>طريقة الدفع</label>
-      <div class="sel-wrap">
-        <select id="payMethod">
-          <option value="نقدي">💵 نقدي</option>
-          <option value="مدى" selected>💳 مدى</option>
-          <option value="فيزا">💳 فيزا / ماستر</option>
-          <option value="أبل باي">🍎 أبل باي</option>
-          <option value="STC Pay">📱 STC Pay</option>
-          <option value="آجل">📝 آجل / دين</option>
-          <option value="نقدي + بطاقة">🔀 نقدي + بطاقة</option>
-        </select>
-      </div>
-    </div>
-    <div class="fg"><label>ملاحظات / رسالة شكر</label>
-      <textarea id="notes" rows="2">شكراً لزيارتكم! نتمنى لكم يوماً سعيداً 😊</textarea>
-    </div>
-  </div>
-
-  <button class="btn btn-gold btn-full" onclick="goTab('items')">← التالي: إضافة الأصناف 🛒</button>
-  <div style="height:8px"></div>
-</div>
-
-<!-- ══════ PAGE: ITEMS ══════ -->
-<div class="page" id="page-items">
-
-  <!-- Quick add categories -->
-  <div class="cats" id="catStrip">
-    <div class="cat-pill active" onclick="filterCat('all',this)">الكل</div>
-    <div class="cat-pill" onclick="filterCat('beverages',this)">🥤 مشروبات</div>
-    <div class="cat-pill" onclick="filterCat('food',this)">🍞 أغذية</div>
-    <div class="cat-pill" onclick="filterCat('dairy',this)">🥛 ألبان</div>
-    <div class="cat-pill" onclick="filterCat('cleaning',this)">🧴 تنظيف</div>
-    <div class="cat-pill" onclick="filterCat('other',this)">📦 أخرى</div>
-  </div>
-
-  <!-- Quick items grid -->
-  <div class="quick-grid" id="quickGrid"></div>
-
-  <div class="divider">أو أضف صنفاً يدوياً</div>
-
-  <!-- Manual items -->
-  <div class="card">
-    <div class="card-title">
-      <div class="ct-left"><div class="ct-icon">🛒</div> الأصناف المضافة</div>
-      <button class="btn btn-gold btn-sm" onclick="addItem()">+ إضافة</button>
-    </div>
-    <div id="itemsList">
-      <div class="empty"><div class="ei">🛒</div><div class="et">اضغط "+ إضافة" أو اختر من الأصناف السريعة</div></div>
-    </div>
-  </div>
-
-  <!-- Totals -->
-  <div class="card">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">💰</div> الإجماليات</div></div>
-    <div class="tot-row">
-      <span class="tot-label">عدد الأصناف</span>
-      <span class="tot-val" id="tCount">0</span>
-    </div>
-    <div class="tot-row">
-      <span class="tot-label">المجموع الفرعي</span>
-      <span class="tot-val" id="tSub">0.00 ر.س</span>
-    </div>
-    <div class="tot-row">
-      <span class="tot-label">
-        ضريبة القيمة المضافة
-        <input class="mini-input" id="taxRate" type="number" value="15" min="0" max="100" oninput="calcAll()">%
-      </span>
-      <span class="tot-val" id="tTax">0.00 ر.س</span>
-    </div>
-    <div class="tot-row">
-      <span class="tot-label">
-        خصم
-        <input class="mini-input" id="discAmt" type="number" value="0" min="0" step="0.5" oninput="calcAll()"> ر.س
-      </span>
-      <span class="tot-val" style="color:var(--rose)" id="tDisc">-0.00 ر.س</span>
-    </div>
-    <div class="tot-row">
-      <span class="tot-label">
-        مستلم
-        <input class="mini-input" id="received" type="number" value="0" min="0" step="1" oninput="calcAll()"> ر.س
-      </span>
-      <span class="tot-val" style="color:var(--teal)" id="tChange">الباقي: 0.00</span>
-    </div>
-    <div class="tot-row grand">
-      <span>الإجمالي الكلي</span>
-      <span id="tGrand">0.00 ر.س</span>
-    </div>
-  </div>
-
-  <button class="btn btn-gold btn-full" onclick="buildAndShow()">← عرض الفاتورة 🧾</button>
-  <div style="height:8px"></div>
-</div>
-
-<!-- ══════ PAGE: RECEIPT ══════ -->
-<div class="page flex-page" id="page-receipt">
-  <p style="font-size:.68rem;color:var(--text3);margin-bottom:12px;font-weight:700;letter-spacing:.06em">📋 معاينة الإيصال</p>
-  <div class="receipt-outer">
-    <div class="receipt-teeth"></div>
-    <div class="receipt-body" id="receiptBody"></div>
-    <div class="receipt-teeth bottom"></div>
-  </div>
-  <div style="height:70px"></div>
-</div>
-
-<!-- ══════ PAGE: HISTORY ══════ -->
-<div class="page" id="page-history">
-  <div class="card" style="margin-bottom:12px">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">📊</div> إحصائيات اليوم</div></div>
-    <div class="stats-strip" style="margin-bottom:0">
-      <div class="stat-box"><div class="sb-val" id="hCount">0</div><div class="sb-label">فاتورة</div></div>
-      <div class="stat-box"><div class="sb-val" id="hTotal">0</div><div class="sb-label">إجمالي ر.س</div></div>
-      <div class="stat-box"><div class="sb-val" id="hAvg">0</div><div class="sb-label">متوسط</div></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">
-      <div class="ct-left"><div class="ct-icon">🗂</div> الفواتير السابقة</div>
-      <button class="btn btn-danger btn-sm" onclick="clearHistory()">مسح</button>
-    </div>
-    <div id="histList">
-      <div class="empty"><div class="ei">🗂</div><div class="et">لا توجد فواتير محفوظة بعد</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════ PAGE: SETTINGS ══════ -->
-<div class="page" id="page-settings">
-  <div class="card">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">🎨</div> المظهر</div></div>
-    <div class="toggle-row">
-      <div class="toggle-info"><div class="tl">لون الشريط العلوي</div><div class="ts">اختر لون مناسب للفاتورة</div></div>
-    </div>
-    <div class="color-row" id="colorPicker">
-      <div class="color-dot active" style="background:#c8930a" onclick="setAccent('#c8930a','#f0c040',this)" title="ذهبي"></div>
-      <div class="color-dot" style="background:#0ea5e9" onclick="setAccent('#0ea5e9','#7dd3fc',this)" title="أزرق"></div>
-      <div class="color-dot" style="background:#8b5cf6" onclick="setAccent('#8b5cf6','#c4b5fd',this)" title="بنفسجي"></div>
-      <div class="color-dot" style="background:#10b981" onclick="setAccent('#10b981','#6ee7b7',this)" title="أخضر"></div>
-      <div class="color-dot" style="background:#f43f5e" onclick="setAccent('#f43f5e','#fda4af',this)" title="أحمر"></div>
-      <div class="color-dot" style="background:#f97316" onclick="setAccent('#f97316','#fdba74',this)" title="برتقالي"></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">🧾</div> إعدادات الفاتورة</div></div>
-    <div class="toggle-row">
-      <div class="toggle-info"><div class="tl">إظهار شعار المتجر</div><div class="ts">رمز تعبيري في رأس الفاتورة</div></div>
-      <button class="toggle on" id="tog-logo" onclick="togSetting('tog-logo','showLogo')"></button>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-info"><div class="tl">إظهار الباركود</div><div class="ts">شريط الباركود في أسفل الفاتورة</div></div>
-      <button class="toggle on" id="tog-bar" onclick="togSetting('tog-bar','showBar')"></button>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-info"><div class="tl">إظهار QR وهمي</div><div class="ts">رمز QR تجريبي</div></div>
-      <button class="toggle on" id="tog-qr" onclick="togSetting('tog-qr','showQR')"></button>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-info"><div class="tl">حفظ الفواتير تلقائياً</div><div class="ts">في السجل عند الطباعة</div></div>
-      <button class="toggle on" id="tog-save" onclick="togSetting('tog-save','autoSave')"></button>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-info"><div class="tl">إظهار خانة المستلم</div><div class="ts">لحساب الباقي تلقائياً</div></div>
-      <button class="toggle on" id="tog-change" onclick="togSetting('tog-change','showChange')"></button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">💱</div> العملة والضريبة</div></div>
-    <div class="fg"><label>رمز العملة</label>
-      <div class="sel-wrap"><select id="currSym" onchange="saveSettings()">
-        <option value="ر.س" selected>ر.س — ريال سعودي</option>
-        <option value="د.إ">د.إ — درهم إماراتي</option>
-        <option value="ك.د">ك.د — دينار كويتي</option>
-        <option value="ر.ع">ر.ع — ريال عماني</option>
-        <option value="د.ب">د.ب — دينار بحريني</option>
-        <option value="ر.ق">ر.ق — ريال قطري</option>
-        <option value="$">$ — دولار أمريكي</option>
-      </select></div>
-    </div>
-    <div class="fg"><label>نسبة الضريبة الافتراضية %</label>
-      <input id="defTax" type="number" value="15" min="0" max="100" onchange="saveSettings()"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">📦</div> إدارة أصناف سريعة</div></div>
-    <p style="font-size:.75rem;color:var(--text3);margin-bottom:10px">أضف أو عدّل أصنافك السريعة، وستظهر في صفحة الأصناف</p>
-    <button class="btn btn-ghost btn-full" onclick="openQuickEditor()">✏️ تعديل الأصناف السريعة</button>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">ℹ️</div> عن التطبيق</div></div>
-    <p style="font-size:.78rem;color:var(--text3);line-height:1.7">
-      <strong style="color:var(--text)">نقطة البيع الذكية</strong> — الإصدار 2.0<br>
-      يعمل بالكامل بدون إنترنت ✅<br>
-      يمكن تثبيته كتطبيق على أندرويد وiOS 📲<br>
-      جميع البيانات محفوظة على جهازك فقط 🔒
-    </p>
-  </div>
-  <div style="height:8px"></div>
-</div>
-
-<!-- ══════ PAGE: TOOLS ══════ -->
-<div class="page" id="page-tools">
-
-  <!-- ساعة + تاريخ -->
-  <div class="card">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">🕐</div> الساعة والتاريخ</div></div>
-    <div class="clock-display">
-      <div class="clock-time"><span id="clkH">00</span>:<span id="clkM">00</span><span class="clock-secs">:<span id="clkS">00</span></span><span id="clkAMPM" style="font-size:1rem;color:var(--text2);font-weight:700;vertical-align:middle"></span></div>
-      <div class="clock-date-h" id="clkHijri">...</div>
-      <div class="clock-date-m" id="clkMiladi">...</div>
-    </div>
-  </div>
-
-  <!-- حاسبة -->
-  <div class="card">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">🧮</div> الحاسبة</div></div>
-    <div class="calc-display">
-      <div class="calc-expr" id="calcExpr"></div>
-      <div class="calc-result" id="calcResult">0</div>
-    </div>
-    <div class="calc-grid">
-      <button class="cb ac" onclick="calcAC()">AC</button>
-      <button class="cb op" onclick="calcSign()">+/-</button>
-      <button class="cb op" onclick="calcPct()">%</button>
-      <button class="cb op" onclick="calcOp('/')">÷</button>
-
-      <button class="cb" onclick="calcNum('7')">7</button>
-      <button class="cb" onclick="calcNum('8')">8</button>
-      <button class="cb" onclick="calcNum('9')">9</button>
-      <button class="cb op" onclick="calcOp('*')">×</button>
-
-      <button class="cb" onclick="calcNum('4')">4</button>
-      <button class="cb" onclick="calcNum('5')">5</button>
-      <button class="cb" onclick="calcNum('6')">6</button>
-      <button class="cb op" onclick="calcOp('-')">−</button>
-
-      <button class="cb" onclick="calcNum('1')">1</button>
-      <button class="cb" onclick="calcNum('2')">2</button>
-      <button class="cb" onclick="calcNum('3')">3</button>
-      <button class="cb op" onclick="calcOp('+')">+</button>
-
-      <button class="cb span2" onclick="calcNum('0')">0</button>
-      <button class="cb" onclick="calcDot()">.</button>
-      <button class="cb eq" onclick="calcEquals()">=</button>
-    </div>
-  </div>
-
-  <!-- العملة المصرية -->
-  <div class="card">
-    <div class="card-title"><div class="ct-left"><div class="ct-icon">🇪🇬</div> تحويل العملة المصرية</div></div>
-    <div class="egp-rate-big" id="egpRateDisplay">جارٍ التحميل...</div>
-    <div class="egp-sub" id="egpRateSub">سعر الدولار مقابل الجنيه المصري</div>
-    <div class="currency-card">
-      <div class="conv-row">
-        <input type="number" id="convFrom" placeholder="المبلغ" oninput="doConvert()" value="1" inputmode="decimal">
-        <div class="sel-wrap" style="flex:1">
-          <select id="convCurFrom" onchange="doConvert()">
-            <option value="USD">$ دولار</option>
-            <option value="SAR">ر.س ريال</option>
-            <option value="AED">د.إ درهم</option>
-            <option value="EUR">€ يورو</option>
-            <option value="GBP">£ جنيه إسترليني</option>
-            <option value="KWD">د.ك دينار</option>
-            <option value="EGP">ج.م جنيه مصري</option>
-          </select>
+    <!-- ====== القائمة الجانبية ====== -->
+    <nav class="sidebar" id="sidebar">
+        <h2><i class="fas fa-heart"></i> ركن البنات</h2>
+        <ul>
+            <li><a href="#" class="active" data-page="home"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="#" data-page="games"><i class="fas fa-gamepad"></i> ألعاب بدون نت</a></li>
+            <li><a href="#" data-page="podcasts"><i class="fas fa-podcast"></i> بودكاست توعية</a></li>
+            <li><a href="#" data-page="religion"><i class="fas fa-mosque"></i> برامج دينية</a></li>
+            <li><a href="#" data-page="quran"><i class="fas fa-quran"></i> القرآن كاملاً</a></li>
+        </ul>
+        <div style="margin-top: 40px; text-align: center; color: var(--sidebar-text); font-size: 13px; opacity: 0.7; transition: color 0.4s;">
+            <i class="fas fa-heart" style="color: #e7628a;"></i> مصمم خصيصاً لكِ
         </div>
-      </div>
-      <div style="text-align:center;font-size:.8rem;color:var(--text3);margin-bottom:8px">▼</div>
-      <div class="conv-row">
-        <div class="conv-result" id="convResult" style="flex:1">...</div>
-        <div class="sel-wrap" style="flex:1">
-          <select id="convCurTo" onchange="doConvert()">
-            <option value="EGP" selected>ج.م جنيه مصري</option>
-            <option value="USD">$ دولار</option>
-            <option value="SAR">ر.س ريال</option>
-            <option value="AED">د.إ درهم</option>
-            <option value="EUR">€ يورو</option>
-            <option value="GBP">£ جنيه إسترليني</option>
-            <option value="KWD">د.ك دينار</option>
-          </select>
+    </nav>
+
+    <!-- ====== المحتوى الرئيسي ====== -->
+    <div class="main-content" id="mainContent">
+
+        <!-- ====== الصفحة الرئيسية ====== -->
+        <div id="home" class="page-section active">
+            <div class="page-header">
+                <h1><i class="fas fa-sparkles"></i> أهلاً بكِ في يومياتكِ</h1>
+            </div>
+            <p style="font-size: 18px; margin-bottom: 20px; color: var(--text-light); transition: color 0.4s;">
+                <i class="fas fa-chevron-left" style="color:#d4628a;"></i> 
+                اختاري من القائمة الجانبية ما تحبين فعله اليوم ♡
+            </p>
+            <div class="card-grid">
+                <div class="card"><h3><i class="fas fa-gamepad"></i> ألعاب</h3><p>ألعاب مسلية بدون إنترنت لتضييع الوقت بطريقة ممتعة.</p></div>
+                <div class="card"><h3><i class="fas fa-podcast"></i> بودكاست</h3><p>بودكاست توعوي مفيد في مختلف المجالات.</p></div>
+                <div class="card"><h3><i class="fas fa-mosque"></i> دين</h3><p>برامج دينية، دروس عن الصلاة، وأكثر.</p></div>
+                <div class="card"><h3><i class="fas fa-quran"></i> قرآن</h3><p>استماع للقرآن الكريم بصوت شيوخ كامل.</p></div>
+            </div>
+            <div class="footer-note">
+                <i class="fas fa-heart" style="color:#e7628a;"></i> كل ما تحتاجينه في مكان واحد
+            </div>
         </div>
-      </div>
-      <div class="egp-note" id="egpUpdated">يتم جلب الأسعار تلقائياً</div>
+
+        <!-- ====== قسم الألعاب ====== -->
+        <div id="games" class="page-section">
+            <div class="page-header">
+                <h1><i class="fas fa-gamepad"></i> ألعاب بدون نت</h1>
+            </div>
+            <div class="card-grid">
+                <div class="card"><h3><i class="fas fa-puzzle-piece"></i> ألغاز</h3><p>لعبة تركيب الصور والألغاز الذهنية.</p><button class="btn-soft">جربي الآن</button></div>
+                <div class="card"><h3><i class="fas fa-dice"></i> ذاكرة</h3><p>لعبة الذاكرة وتطابق البطاقات.</p><button class="btn-soft">جربي الآن</button></div>
+                <div class="card"><h3><i class="fas fa-chess-queen"></i> كلمات</h3><p>تحدي الكلمات المتقاطعة والحروف.</p><button class="btn-soft">جربي الآن</button></div>
+            </div>
+        </div>
+
+        <!-- ====== قسم البودكاست ====== -->
+        <div id="podcasts" class="page-section">
+            <div class="page-header">
+                <h1><i class="fas fa-podcast"></i> بودكاست توعية</h1>
+            </div>
+            <div class="card-grid">
+                <div class="card"><h3><i class="fas fa-brain"></i> وعي ذاتي</h3><p>حلقات عن تطوير الذات والصحة النفسية.</p><button class="btn-soft">استمعي</button></div>
+                <div class="card"><h3><i class="fas fa-hand-holding-heart"></i> توعية اجتماعية</h3><p>مواضيع عن العلاقات والمجتمع.</p><button class="btn-soft">استمعي</button></div>
+                <div class="card"><h3><i class="fas fa-leaf"></i> حياة صحية</h3><p>نصائح عن التغذية والرياضة والعافية.</p><button class="btn-soft">استمعي</button></div>
+            </div>
+        </div>
+
+        <!-- ====== قسم البرامج الدينية ====== -->
+        <div id="religion" class="page-section">
+            <div class="page-header">
+                <h1><i class="fas fa-mosque"></i> برامج دينية</h1>
+            </div>
+            <div class="card-grid">
+                <div class="card"><h3><i class="fas fa-video"></i> دروس الصلاة</h3><p>سلسلة فيديوهات عن أحكام الصلاة بخشوع.</p><button class="btn-soft">شاهدي</button></div>
+                <div class="card"><h3><i class="fas fa-book-open"></i> تفسير مبسط</h3><p>تفسير الآيات بشكل سهل وجميل.</p><button class="btn-soft">شاهدي</button></div>
+                <div class="card"><h3><i class="fas fa-star-and-crescent"></i> أذكار وأدعية</h3><p>برنامج يومي للأذكار مع التكرار.</p><button class="btn-soft">شاهدي</button></div>
+                <div class="card"><h3><i class="fas fa-hands-praying"></i> قصص الأنبياء</h3><p>حلقات مشوقة عن قصص الأنبياء.</p><button class="btn-soft">شاهدي</button></div>
+            </div>
+        </div>
+
+        <!-- ====== قسم القرآن ====== -->
+        <div id="quran" class="page-section">
+            <div class="page-header">
+                <h1><i class="fas fa-quran"></i> القرآن الكريم - بصوت شيوخ</h1>
+            </div>
+            <div class="card-grid">
+                <div class="card"><h3><i class="fas fa-microphone-alt"></i> الشيخ عبدالباسط</h3><p>المصحف المجود كاملاً برواية حفص.</p><button class="btn-soft"><i class="fas fa-play"></i> استمعي</button></div>
+                <div class="card"><h3><i class="fas fa-microphone-alt"></i> الشيخ الحصري</h3><p>تلاوة خاشعة للمصحف كامل.</p><button class="btn-soft"><i class="fas fa-play"></i> استمعي</button></div>
+                <div class="card"><h3><i class="fas fa-microphone-alt"></i> الشيخ المنشاوي</h3><p>تلاوة مجودة بأحلى صوت.</p><button class="btn-soft"><i class="fas fa-play"></i> استمعي</button></div>
+                <div class="card"><h3><i class="fas fa-microphone-alt"></i> الشيخ السديس</h3><p>تلاوة من الحرم المكي بصوت عذب.</p><button class="btn-soft"><i class="fas fa-play"></i> استمعي</button></div>
+            </div>
+            <p style="margin-top:25px; padding:15px; border-radius:30px; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); transition: all 0.4s;">
+                <i class="fas fa-info-circle" style="color:#d4628a;"></i>
+                ملاحظة: يمكنك تحميل هذه التلاوات مسبقاً للاستماع بدون نت.
+            </p>
+        </div>
+
     </div>
-  </div>
 
-  <div style="height:8px"></div>
-</div>
+    <!-- ====== كود الجافا سكريبت ====== -->
+    <script>
+        (function() {
+            // --- عناصر الثيم ---
+            const themeToggle = document.getElementById('themeToggle');
+            const themeLabel = document.getElementById('themeLabel');
+            const themeIcon = themeToggle.querySelector('i');
+
+            // --- عناصر القائمة والمحتوى ---
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menuToggle');
+            const links = document.querySelectorAll('.sidebar ul li a');
+            const sections = document.querySelectorAll('.page-section');
+
+            // ====== 1. وظيفة تبديل الثيم ======
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    document.documentElement.removeAttribute('data-theme');
+                    themeLabel.textContent = 'داكن';
+                    themeIcon.className = 'fas fa-moon';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    themeLabel.textContent = 'نهاري';
+                    themeIcon.className = 'fas fa-sun';
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+
+            // ====== 2. تحميل الثيم المخزن ======
+            function loadTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    themeLabel.textContent = 'نهاري';
+                    themeIcon.className = 'fas fa-sun';
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                    themeLabel.textContent = 'داكن';
+                    themeIcon.className = 'fas fa-moon';
+                }
+            }
+
+            // ====== 3. وظيفة تبديل الأقسام ======
+            function switchPage(pageId) {
+                sections.forEach(sec => sec.classList.remove('active'));
+                const target = document.getElementById(pageId);
+                if (target) target.classList.add('active');
+
+                links.forEach(link => link.classList.remove('active'));
+                const activeLink = Array.from(links).find(link => link.dataset.page === pageId);
+                if (activeLink) activeLink.classList.add('active');
+
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    const icon = menuToggle.querySelector('i');
+                    if (icon) icon.className = 'fas fa-bars';
+                }
+            }
+
+            // ====== 4. الأحداث (Event Listeners) ======
+
+            // تبديل الثيم
+            themeToggle.addEventListener('click', toggleTheme);
+
+            // روابط القائمة
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.dataset.page;
+                    if (page) switchPage(page);
+                });
+            });
+
+            // زر القائمة (للجوال)
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                const icon = this.querySelector('i');
+                if (sidebar.classList.contains('open')) {
+                    icon.className = 'fas fa-times';
+                } else {
+                    icon.className = 'fas fa-bars';
+                }
+            });
+
+            // عند تغيير حجم الشاشة
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('open');
+                    const icon = menuToggle.querySelector('i');
+                    if (icon) icon.className = 'fas fa-bars';
+                }
+            });
+
+            // الأزرار الداخلية (تجريبي)
+            document.querySelectorAll('.btn-soft').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('هذه مجرد واجهة تجريبية 🎀 يمكنك إضافة الروابط أو المحتوى الفعلي هنا.');
+                });
+            });
 
-</div><!-- /content -->
+            // ====== 5. تشغيل تحميل الثيم عند تحميل الصفحة ======
+            loadTheme();
 
-<!-- ══ PRINT BAR ══ -->
-<div class="pbar" id="printBar">
-  <button class="btn btn-gold" style="flex:2" onclick="doPrint()">🖨 طباعة</button>
-  <button class="btn btn-teal" style="flex:1" onclick="doSave()">💾 حفظ</button>
-  <button class="btn btn-ghost" style="flex:1" onclick="openShareModal()">📤 شارك</button>
-</div>
+        })();
+    </script>
 
-<!-- ══ TAB BAR ══ -->
-<div class="tabbar">
-  <button class="tab active" id="tab-home" onclick="goTab('home')">
-    <span class="t-icon">🏠</span><span>الرئيسية</span>
-  </button>
-  <button class="tab" id="tab-items" onclick="goTab('items')">
-    <span class="t-icon">🛒</span><span>الأصناف</span>
-    <span class="tab-badge" id="tabBadge" style="display:none">0</span>
-  </button>
-  <button class="tab" id="tab-receipt" onclick="buildAndShow()">
-    <span class="t-icon">🧾</span><span>الفاتورة</span>
-  </button>
-  <button class="tab" id="tab-history" onclick="goTab('history');loadHistory()">
-    <span class="t-icon">🗂</span><span>السجل</span>
-  </button>
-  <button class="tab" id="tab-tools" onclick="goTab('tools')">
-    <span class="t-icon">🧮</span><span>أدوات</span>
-  </button>
-  <button class="tab" id="tab-settings" onclick="goTab('settings')">
-    <span class="t-icon">⚙️</span><span>إعدادات</span>
-  </button>
-</div>
-
-<!-- ══ TOAST ══ -->
-<div class="toast" id="toast"></div>
-
-<!-- ══ SHARE MODAL ══ -->
-<div class="modal-bg" id="shareModal">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">📤 مشاركة الفاتورة</div>
-    <div class="share-grid">
-      <div class="share-card sc-email" onclick="openEmailModal()">
-        <div class="sc-icon">📧</div>
-        <div class="sc-label">بريد إلكتروني</div>
-      </div>
-      <div class="share-card sc-wa" onclick="shareWhatsApp()">
-        <div class="sc-icon">💬</div>
-        <div class="sc-label">واتساب</div>
-      </div>
-      <div class="share-card sc-copy" onclick="copyInvoiceText()">
-        <div class="sc-icon">📋</div>
-        <div class="sc-label">نسخ النص</div>
-      </div>
-      <div class="share-card sc-pdf" onclick="downloadInvoiceHTML()">
-        <div class="sc-icon">📄</div>
-        <div class="sc-label">تحميل HTML</div>
-      </div>
-    </div>
-    <div style="height:12px"></div>
-    <button class="btn btn-ghost btn-full" onclick="closeModal('shareModal')">إغلاق</button>
-  </div>
-</div>
-
-<!-- ══ EMAIL MODAL ══ -->
-<div class="modal-bg" id="emailModal">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">📧 إرسال الفاتورة بالبريد</div>
-    <div class="email-field">
-      <label>البريد الإلكتروني للعميل</label>
-      <input type="email" id="emailTo" placeholder="example@email.com" inputmode="email" dir="ltr">
-    </div>
-    <div class="email-field">
-      <label>الموضوع</label>
-      <input type="text" id="emailSubject" placeholder="فاتورة رقم INV-00247">
-    </div>
-    <div class="email-field">
-      <label>نص الرسالة</label>
-      <textarea id="emailBody" rows="5" style="font-size:.82rem;line-height:1.7"></textarea>
-    </div>
-    <div class="email-field">
-      <label>📎 الفاتورة</label>
-      <div class="email-preview-box" id="emailAttachPreview">سيتم إرفاق الفاتورة كملف HTML مع البريد</div>
-    </div>
-    <div style="display:flex;gap:8px;margin-top:4px">
-      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('emailModal')">إلغاء</button>
-      <button class="btn btn-gold" style="flex:2" onclick="sendEmail()">📤 إرسال الآن</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ QUICK EDITOR MODAL ══ -->
-<div class="modal-bg" id="quickEditorModal">
-  <div class="modal" style="max-height:85vh">
-    <div class="modal-handle"></div>
-    <div class="modal-title">✏️ تعديل الأصناف السريعة</div>
-    <div id="qiEditList" style="overflow-y:auto;max-height:55vh"></div>
-    <div style="display:flex;gap:8px;margin-top:10px">
-      <button class="btn btn-ghost btn-sm" onclick="addQuickItemRow()">+ إضافة صنف</button>
-      <button class="btn btn-gold" style="flex:1" onclick="saveQuickItems()">💾 حفظ التغييرات</button>
-    </div>
-    <div style="height:6px"></div>
-    <button class="btn btn-ghost btn-full" style="margin-top:4px" onclick="closeModal('quickEditorModal')">إغلاق</button>
-  </div>
-</div>
-
-<script>
-// ════════════════════════════════════════
-// SERVICE WORKER
-
-// ════════════════════════════════════════
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js').catch(()=>{});
-}
-
-// ════════════════════════════════════════
-// PWA INSTALL
-// ════════════════════════════════════════
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();deferredPrompt=e;
-  document.getElementById('installBanner').classList.add('show');
-});
-window.addEventListener('appinstalled',()=>{
-  document.getElementById('installBanner').classList.remove('show');
-  toast('✅ تم التثبيت!');
-});
-document.getElementById('installBtn').addEventListener('click',async()=>{
-  if(!deferredPrompt)return;
-  deferredPrompt.prompt();
-  const{outcome}=await deferredPrompt.userChoice;
-  if(outcome==='accepted')document.getElementById('installBanner').classList.remove('show');
-  deferredPrompt=null;
-});
-
-// ════════════════════════════════════════
-// STATE
-// ════════════════════════════════════════
-let items=[];
-let nid=1;
-let history_data=JSON.parse(localStorage.getItem('pos_history')||'[]');
-let settings=JSON.parse(localStorage.getItem('pos_settings')||JSON.stringify({
-  showLogo:true,showBar:true,showQR:true,autoSave:true,showChange:true,
-  accentColor:'#c8930a',accentLight:'#f0c040',currency:'ر.س',defTax:15
-}));
-
-// Quick items database
-let quickItems=[
-  {id:1,cat:'beverages',icon:'💧',name:'ماء 1.5L',price:1.50},
-  {id:2,cat:'beverages',icon:'🥤',name:'عصير برتقال',price:3.00},
-  {id:3,cat:'beverages',icon:'🧃',name:'نكتار تفاح',price:2.50},
-  {id:4,cat:'food',icon:'🍞',name:'خبز توست',price:4.75},
-  {id:5,cat:'food',icon:'🥐',name:'كرواسون',price:5.50},
-  {id:6,cat:'food',icon:'🍪',name:'بسكويت',price:3.25},
-  {id:7,cat:'dairy',icon:'🥛',name:'حليب 1L',price:6.50},
-  {id:8,cat:'dairy',icon:'🧀',name:'جبن شيدر',price:12.00},
-  {id:9,cat:'dairy',icon:'🍦',name:'زبادي',price:4.00},
-  {id:10,cat:'cleaning',icon:'🧴',name:'سائل تنظيف',price:8.00},
-  {id:11,cat:'cleaning',icon:'🧻',name:'مناديل',price:5.00},
-  {id:12,cat:'other',icon:'🍫',name:'شوكولاتة',price:6.00},
-];
-let currentCat='all';
-let quickItemsCustom=JSON.parse(localStorage.getItem('pos_quick')||'null');
-if(quickItemsCustom)quickItems=quickItemsCustom;
-
-// ════════════════════════════════════════
-// TABS
-// ════════════════════════════════════════
-function goTab(name){
-  ['home','items','receipt','history','settings','tools'].forEach(t=>{
-    const p=document.getElementById('page-'+t);
-    if(p){p.classList.toggle('active',t===name)}
-    const tb=document.getElementById('tab-'+t);
-    if(tb){tb.classList.toggle('active',t===name)}
-  });
-  document.getElementById('printBar').classList.toggle('on',name==='receipt');
-}
-
-// ════════════════════════════════════════
-// QUICK ITEMS
-// ════════════════════════════════════════
-function renderQuick(){
-  const grid=document.getElementById('quickGrid');
-  const filtered=currentCat==='all'?quickItems:quickItems.filter(q=>q.cat===currentCat);
-  if(!filtered.length){grid.innerHTML='<p style="font-size:.75rem;color:var(--text3);text-align:center;padding:8px;grid-column:1/-1">لا توجد أصناف في هذا القسم</p>';return;}
-  grid.innerHTML=filtered.map(q=>`
-    <div class="quick-item" onclick="quickAdd(${q.id})">
-      <div class="qi-icon">${q.icon}</div>
-      <div class="qi-name">${q.name}</div>
-      <div class="qi-price">${q.price.toFixed(2)} ${getCurrency()}</div>
-    </div>`).join('');
-}
-
-function filterCat(cat,el){
-  currentCat=cat;
-  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
-  renderQuick();
-}
-
-function quickAdd(id){
-  const q=quickItems.find(x=>x.id===id);
-  if(!q)return;
-  const existing=items.find(i=>i.name===q.name);
-  if(existing){existing.qty++;renderItems();calcAll();toast('✅ تمت الإضافة: '+q.name);}
-  else{addItem(q.name,1,q.price);}
-}
-
-// ════════════════════════════════════════
-// ITEMS CRUD
-// ════════════════════════════════════════
-function addItem(name='',qty=1,price=0){
-  items.push({id:nid++,name,qty,price});
-  renderItems();calcAll();
-}
-
-function removeItem(id){
-  items=items.filter(i=>i.id!==id);
-  renderItems();calcAll();
-}
-
-function setF(id,field,raw){
-  const it=items.find(i=>i.id===id);if(!it)return;
-  it[field]=(field==='name')?raw:(parseFloat(raw)||0);
-  const chip=document.querySelector('[data-chip="'+id+'"]');
-  if(chip)chip.textContent=(it.qty*it.price).toFixed(2)+' '+getCurrency();
-  calcAll();
-}
-
-function renderItems(){
-  const el=document.getElementById('itemsList');
-  // badge
-  const badge=document.getElementById('tabBadge');
-  if(items.length>0){badge.style.display='';badge.textContent=items.length;}
-  else{badge.style.display='none';}
-  if(!items.length){
-    el.innerHTML='<div class="empty"><div class="ei">🛒</div><div class="et">اضغط "+ إضافة" أو اختر من الأصناف السريعة</div></div>';
-    return;
-  }
-  el.innerHTML='';
-  items.forEach((it,idx)=>{
-    const d=document.createElement('div');
-    d.className='item-card';
-    d.innerHTML=
-      '<span class="item-num-badge">'+(idx+1)+'</span>'+
-      '<div class="ic-top">'+
-        '<input type="text" value="'+esc(it.name)+'" placeholder="اسم الصنف" oninput="setF('+it.id+',\'name\',this.value)" style="flex:1">'+
-        '<button class="btn btn-danger btn-sm btn-icon" onclick="removeItem('+it.id+')">🗑</button>'+
-      '</div>'+
-      '<div class="ic-nums">'+
-        '<div><div class="ic-label">الكمية</div><input type="number" value="'+it.qty+'" min="1" oninput="setF('+it.id+',\'qty\',this.value)"></div>'+
-        '<div><div class="ic-label">السعر '+getCurrency()+'</div><input type="number" value="'+it.price+'" min="0" step="0.01" oninput="setF('+it.id+',\'price\',this.value)"></div>'+
-        '<div class="ic-chip" data-chip="'+it.id+'">'+(it.qty*it.price).toFixed(2)+' '+getCurrency()+'</div>'+
-      '</div>';
-    el.appendChild(d);
-  });
-}
-
-// ════════════════════════════════════════
-// CALC
-// ════════════════════════════════════════
-function calcAll(){
-  const sub=items.reduce((s,i)=>s+i.qty*i.price,0);
-  const rate=parseFloat(g('taxRate').value)||0;
-  const disc=parseFloat(g('discAmt').value)||0;
-  const rec=parseFloat(g('received').value)||0;
-  const tax=sub*rate/100;
-  const grand=Math.max(0,sub+tax-disc);
-  const change=rec>0?Math.max(0,rec-grand):0;
-  const cur=getCurrency();
-  g('tCount').textContent=items.length+' صنف';
-  g('tSub').textContent=sub.toFixed(2)+' '+cur;
-  g('tTax').textContent=tax.toFixed(2)+' '+cur;
-  g('tDisc').textContent='-'+disc.toFixed(2)+' '+cur;
-  g('tGrand').textContent=grand.toFixed(2)+' '+cur;
-  g('tChange').textContent='الباقي: '+(rec>0?change.toFixed(2):'--')+' '+cur;
-  g('statItems').textContent=items.length;
-  g('statSub').textContent=sub.toFixed(0);
-  g('statGrand').textContent=grand.toFixed(0);
-  g('tbSub').innerHTML='✅ يعمل بدون إنترنت &nbsp;|&nbsp; الإجمالي: '+grand.toFixed(2)+' '+cur;
-  return{sub,tax,disc,grand,rate,change,rec};
-}
-
-// ════════════════════════════════════════
-// BUILD RECEIPT
-// ════════════════════════════════════════
-function buildReceipt(){
-  const{sub,tax,disc,grand,rate,change,rec}=calcAll();
-  const sn=val('storeName')||'اسم المتجر';
-  const sa=val('storeAddr');
-  const sp=val('storePhone');
-  const st=val('storeTax');
-  const inv=val('invNum');
-  const cas=val('cashier');
-  const tab=val('tableNum');
-  const cn=val('custName');
-  const cp=val('custPhone');
-  const pay=g('payMethod').value;
-  const note=val('notes');
-  const cur=getCurrency();
-  const now=new Date();
-  const ds=now.toLocaleDateString('ar',{year:'numeric',month:'2-digit',day:'2-digit'});
-  const ts=now.toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
-  const seed=(inv.replace(/\D/g,'')||'247').padStart(10,'0');
-
-  let rows=items.length?items.map(it=>`
-    <div class="r-row">
-      <span class="rn">${esc(it.name||'---')}</span>
-      <span class="rc">${it.qty}</span>
-      <span class="rl">${it.price.toFixed(2)}</span>
-      <span class="rlb">${(it.qty*it.price).toFixed(2)}</span>
-    </div>`).join('')
-    :'<div style="text-align:center;color:#aaa;font-size:10px;padding:6px 0">لا توجد أصناف</div>';
-
-  const logoHTML=settings.showLogo?'<div class="r-logo-area"><div class="r-logo-circle">🧾</div></div>':'';
-  const barHTML=settings.showBar?`<div class="r-bar">||| ||  | ||| | || |  ||| | ||  || | |||</div><div class="r-barnum">${inv} • ${seed}</div>`:'';
-  const qrHTML=settings.showQR?'<div style="display:flex;justify-content:center;margin:6px 0"><div class="r-qr-placeholder">▦</div></div>':'';
-
-  g('receiptBody').innerHTML=
-    logoHTML+
-    `<div class="r-store">${esc(sn)}</div>`+
-    (sa?`<div class="r-sub">${esc(sa)}</div>`:'')+
-    (sp?`<div class="r-sub">📞 ${esc(sp)}</div>`:'')+
-    (st?`<div class="r-sub" style="font-size:8.5px">الرقم الضريبي: ${esc(st)}</div>`:'')+
-    '<div class="r-stars">✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦</div>'+
-    `<div class="r-meta"><span>فاتورة: ${esc(inv)}</span><span>${ts}</span></div>`+
-    `<div class="r-meta"><span>كاشير: ${esc(cas)}</span><span>${ds}</span></div>`+
-    (tab?`<div class="r-meta"><span>طاولة/منفذ: ${esc(tab)}</span></div>`:'')+
-    (cn?`<div class="r-meta"><span>عميل: ${esc(cn)}${cp?' — '+cp:''}</span></div>`:'')+
-    '<hr class="r-hr">'+
-    '<div class="r-th"><span>الصنف</span><span style="text-align:center">كم</span><span style="text-align:left;direction:ltr">سعر</span><span style="text-align:left;direction:ltr">مجموع</span></div>'+
-    '<hr class="r-hr">'+
-    rows+
-    '<hr class="r-hr">'+
-    `<div class="r-totrow"><span>المجموع الفرعي</span><span>${sub.toFixed(2)} ${cur}</span></div>`+
-    (rate>0?`<div class="r-totrow"><span>ضريبة (${rate}%)</span><span>${tax.toFixed(2)} ${cur}</span></div>`:'')+
-    (disc>0?`<div class="r-totrow" style="color:#c0392b"><span>خصم</span><span>-${disc.toFixed(2)} ${cur}</span></div>`:'')+
-    '<hr class="r-hr-solid">'+
-    `<div class="r-grand"><span>الإجمالي</span><span>${grand.toFixed(2)} ${cur}</span></div>`+
-    '<hr class="r-hr">'+
-    `<div class="r-payrow"><span>طريقة الدفع</span><span>${esc(pay)}</span></div>`+
-    `<div class="r-payrow"><span>المبلغ المدفوع</span><span>${rec>0?rec.toFixed(2):grand.toFixed(2)} ${cur}</span></div>`+
-    `<div class="r-payrow"><span>الباقي</span><span>${rec>0?change.toFixed(2):'0.00'} ${cur}</span></div>`+
-    '<hr class="r-hr">'+
-    barHTML+
-    qrHTML+
-    (note?`<hr class="r-hr"><div class="r-thanks">${esc(note)}</div>`:'')+
-    '<div class="r-thanks" style="font-size:8.5px;color:#bbb;margin-top:6px">Powered by نقطة البيع الذكية ★</div>';
-}
-
-function buildAndShow(){
-  buildReceipt();
-  goTab('receipt');
-}
-
-// ════════════════════════════════════════
-// PRINT / SAVE / SHARE
-// ════════════════════════════════════════
-function doPrint(){
-  buildReceipt();
-  if(settings.autoSave)saveInvoice();
-  setTimeout(()=>window.print(),80);
-  toast('🖨 جاري الطباعة...');
-}
-
-function doSave(){saveInvoice();toast('💾 تم الحفظ في السجل');}
-
-function saveInvoice(){
-  const{grand}=calcAll();
-  const inv={
-    id:Date.now(),num:val('invNum'),
-    store:val('storeName'),customer:val('custName')||'—',
-    grand:grand,items:items.length,pay:g('payMethod').value,
-    date:new Date().toLocaleDateString('ar',{year:'numeric',month:'2-digit',day:'2-digit'}),
-    time:new Date().toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'})
-  };
-  history_data.unshift(inv);
-  if(history_data.length>200)history_data=history_data.slice(0,200);
-  localStorage.setItem('pos_history',JSON.stringify(history_data));
-}
-
-// ════════════════════════════════════════
-// SHARE — MODAL
-// ════════════════════════════════════════
-function openShareModal(){
-  buildReceipt();
-  document.getElementById('shareModal').classList.add('open');
-}
-
-function closeModal(id){
-  document.getElementById(id).classList.remove('open');
-}
-
-// Close modal on backdrop click
-['shareModal','emailModal','quickEditorModal'].forEach(id=>{
-  const el=document.getElementById(id);
-  if(el) el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
-});
-
-// ── WhatsApp Share ──
-function shareWhatsApp(){
-  const{grand}=calcAll();
-  const cur=getCurrency();
-  const sn=val('storeName')||'المتجر';
-  const inv=val('invNum');
-  const cn=val('custName');
-  const pay=g('payMethod').value;
-  const now=new Date();
-  const ds=now.toLocaleDateString('ar',{year:'numeric',month:'2-digit',day:'2-digit'});
-  const ts=now.toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
-
-  let itemLines=items.map((it,i)=>`${i+1}. ${it.name} × ${it.qty} = ${(it.qty*it.price).toFixed(2)} ${cur}`).join('\n');
-
-  const text=
-`🧾 *فاتورة من: ${sn}*
-رقم الفاتورة: ${inv}
-التاريخ: ${ds} — ${ts}
-${cn?'العميل: '+cn+'\n':''}━━━━━━━━━━━━━━━
-${itemLines}
-━━━━━━━━━━━━━━━
-💰 *الإجمالي: ${grand.toFixed(2)} ${cur}*
-💳 طريقة الدفع: ${pay}
-
-شكراً لتعاملكم معنا 🙏`;
-
-  closeModal('shareModal');
-  const encoded=encodeURIComponent(text);
-  const phone=val('custPhone').replace(/\D/g,'');
-  const url=phone
-    ? `https://wa.me/${phone.startsWith('0')?'966'+phone.slice(1):phone}?text=${encoded}`
-    : `https://wa.me/?text=${encoded}`;
-  window.open(url,'_blank');
-}
-
-// ── Copy Invoice Text ──
-function copyInvoiceText(){
-  const{sub,tax,disc,grand,rate,change,rec}=calcAll();
-  const cur=getCurrency();
-  const sn=val('storeName')||'المتجر';
-  const inv=val('invNum');
-  const cn=val('custName');
-  const pay=g('payMethod').value;
-  const note=val('notes');
-  const now=new Date();
-  const ds=now.toLocaleDateString('ar',{year:'numeric',month:'2-digit',day:'2-digit'});
-  const ts=now.toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
-
-  let itemLines=items.map((it,i)=>`  ${i+1}. ${it.name.padEnd(20,' ')} × ${it.qty}   ${(it.qty*it.price).toFixed(2)} ${cur}`).join('\n');
-
-  const text=
-`════════════════════════
-🧾 ${sn}
-${val('storeAddr')}
-📞 ${val('storePhone')}
-الرقم الضريبي: ${val('storeTax')}
-════════════════════════
-فاتورة: ${inv}
-التاريخ: ${ds} — الساعة: ${ts}
-الكاشير: ${val('cashier')}${cn?'\nالعميل: '+cn:''}
-────────────────────────
-${itemLines}
-────────────────────────
-المجموع الفرعي: ${sub.toFixed(2)} ${cur}
-${rate>0?`ضريبة (${rate}%): ${tax.toFixed(2)} ${cur}\n`:''}${disc>0?`خصم: -${disc.toFixed(2)} ${cur}\n`:''}الإجمالي: ${grand.toFixed(2)} ${cur}
-────────────────────────
-طريقة الدفع: ${pay}
-${rec>0?`المبلغ المدفوع: ${rec.toFixed(2)} ${cur}\nالباقي: ${change.toFixed(2)} ${cur}`:''}
-════════════════════════
-${note}`;
-
-  navigator.clipboard.writeText(text).then(()=>{
-    closeModal('shareModal');
-    toast('✅ تم نسخ الفاتورة إلى الحافظة');
-  }).catch(()=>{
-    // Fallback
-    const ta=document.createElement('textarea');
-    ta.value=text;document.body.appendChild(ta);ta.select();
-    document.execCommand('copy');document.body.removeChild(ta);
-    closeModal('shareModal');
-    toast('✅ تم النسخ');
-  });
-}
-
-// ── Download Invoice as HTML ──
-function downloadInvoiceHTML(){
-  buildReceipt();
-  const receiptHTML=document.getElementById('receiptBody').innerHTML;
-  const sn=val('storeName')||'فاتورة';
-  const inv=val('invNum');
-  const html=`<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>فاتورة ${inv}</title>
-<style>
-body{background:#f5f5f5;display:flex;justify-content:center;padding:20px;font-family:system-ui,Arial,sans-serif}
-.receipt-body{
-  background:#fefdf8;padding:20px 24px;
-  font-family:'Courier New',monospace;font-size:12px;line-height:1.7;
-  color:#1a1a1a;direction:rtl;width:320px;
-  box-shadow:0 4px 20px rgba(0,0,0,.2);border-radius:4px;
-}
-.r-store{font-size:16px;font-weight:900;text-align:center;font-family:Arial}
-.r-sub{text-align:center;font-size:10px;color:#666;line-height:1.5}
-.r-stars{text-align:center;color:#bbb;margin:7px 0;font-size:9px;letter-spacing:5px}
-.r-meta{display:flex;justify-content:space-between;font-size:10px;color:#555}
-.r-hr{border:none;border-top:1px dashed #ccc;margin:7px 0}
-.r-hr-solid{border:none;border-top:2px solid #222;margin:7px 0}
-.r-th{display:grid;grid-template-columns:1fr 32px 48px 54px;font-size:9px;font-weight:700;color:#777;gap:2px;padding-bottom:3px}
-.r-row{display:grid;grid-template-columns:1fr 32px 48px 54px;font-size:11px;gap:2px;padding:3px 0;border-bottom:1px dotted #e0e0e0}
-.r-totrow{display:flex;justify-content:space-between;font-size:10.5px;padding:2px 0;color:#444}
-.r-grand{display:flex;justify-content:space-between;font-size:15px;font-weight:900;padding:6px 0 4px}
-.r-payrow{display:flex;justify-content:space-between;font-size:10px;color:#666;padding:1.5px 0}
-.r-bar{text-align:center;font-size:18px;letter-spacing:3px;margin:8px 0 3px;color:#111}
-.r-barnum{text-align:center;font-size:8.5px;color:#bbb;letter-spacing:.15em}
-.r-thanks{text-align:center;font-size:10px;color:#666;line-height:1.5;margin-top:7px}
-.r-logo-area{text-align:center;margin-bottom:6px}
-.r-logo-circle{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#c8930a,#f0c040);display:inline-flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:4px}
-.r-qr-placeholder{text-align:center;margin:8px auto;width:54px;height:54px;border:2px solid #ccc;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.8rem}
-.rc{text-align:center;color:#666}.rl{text-align:left;direction:ltr}.rlb{text-align:left;direction:ltr;font-weight:700}.rn{font-weight:600;font-size:10.5px;word-break:break-all}
-</style>
-</head>
-<body>
-<div class="receipt-body">${receiptHTML}</div>
-</body>
-</html>`;
-
-  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download=`${inv}-${sn}.html`;
-  document.body.appendChild(a);a.click();
-  document.body.removeChild(a);URL.revokeObjectURL(url);
-  closeModal('shareModal');
-  toast('✅ تم تحميل الفاتورة كملف HTML');
-}
-
-// ════════════════════════════════════════
-// EMAIL MODAL
-// ════════════════════════════════════════
-function openEmailModal(){
-  closeModal('shareModal');
-  const sn=val('storeName')||'المتجر';
-  const inv=val('invNum');
-  const cn=val('custName');
-  const cp=val('custPhone');
-  const{grand}=calcAll();
-  const cur=getCurrency();
-  const now=new Date();
-  const ds=now.toLocaleDateString('ar',{year:'numeric',month:'2-digit',day:'2-digit'});
-
-  // Pre-fill email
-  if(g('emailTo'))g('emailTo').value='';
-  if(g('emailSubject'))g('emailSubject').value=`فاتورة رقم ${inv} من ${sn}`;
-
-  // Default message body
-  const body=`السلام عليكم ورحمة الله وبركاته،
-
-${cn?'عزيزنا/تنا '+cn+'،\n\n':''}يسرنا إرسال فاتورتكم رقم *${inv}* الصادرة بتاريخ ${ds} من *${sn}*.
-
-💰 إجمالي الفاتورة: *${grand.toFixed(2)} ${cur}*
-
-يرجى الاطلاع على الفاتورة المرفقة.
-
-شكراً لتعاملكم معنا ونسعد بخدمتكم دائماً 🙏
-
-مع تحياتنا،
-${sn}`;
-
-  if(g('emailBody'))g('emailBody').value=body;
-
-  document.getElementById('emailModal').classList.add('open');
-}
-
-function sendEmail(){
-  const to=g('emailTo').value.trim();
-  const subject=encodeURIComponent(g('emailSubject').value.trim()||'فاتورة');
-  const body=encodeURIComponent(g('emailBody').value.trim());
-
-  if(!to){toast('⚠️ يرجى إدخال البريد الإلكتروني');return;}
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)){toast('⚠️ البريد الإلكتروني غير صحيح');return;}
-
-  // Download the invoice HTML file first, then open mailto
-  downloadInvoiceHTML();
-
-  setTimeout(()=>{
-    const mailto=`mailto:${encodeURIComponent(to)}?subject=${subject}&body=${body}`;
-    window.location.href=mailto;
-    closeModal('emailModal');
-    toast('📧 تم فتح برنامج البريد — أرفق ملف الفاتورة الذي تم تحميله');
-  }, 800);
-}
-
-// ════════════════════════════════════════
-// QUICK ITEMS EDITOR
-// ════════════════════════════════════════
-let qiEditData=[];
-
-function openQuickEditor(){
-  qiEditData=JSON.parse(JSON.stringify(quickItems));
-  renderQiEdit();
-  document.getElementById('quickEditorModal').classList.add('open');
-}
-
-const CAT_OPTIONS=['beverages','food','dairy','cleaning','other'];
-const CAT_LABELS={beverages:'مشروبات',food:'أغذية',dairy:'ألبان',cleaning:'تنظيف',other:'أخرى'};
-
-function renderQiEdit(){
-  const el=g('qiEditList');
-  el.innerHTML=qiEditData.map((q,i)=>`
-    <div class="qi-edit-row" id="qier-${i}">
-      <input type="text" value="${q.icon||'📦'}" style="text-align:center;padding:6px 4px;font-size:1.1rem" oninput="qiEditData[${i}].icon=this.value">
-      <input type="text" value="${esc(q.name)}" placeholder="اسم الصنف" oninput="qiEditData[${i}].name=this.value">
-      <select onchange="qiEditData[${i}].cat=this.value" style="padding:7px 6px;font-size:.72rem">
-        ${CAT_OPTIONS.map(c=>`<option value="${c}"${q.cat===c?' selected':''}>${CAT_LABELS[c]}</option>`).join('')}
-      </select>
-      <input type="number" value="${q.price}" min="0" step="0.01" placeholder="السعر" style="text-align:center" oninput="qiEditData[${i}].price=parseFloat(this.value)||0">
-      <button class="btn btn-danger btn-sm btn-icon" onclick="removeQiRow(${i})">🗑</button>
-    </div>`).join('');
-}
-
-function addQuickItemRow(){
-  const maxId=qiEditData.reduce((m,q)=>Math.max(m,q.id||0),0);
-  qiEditData.push({id:maxId+1,cat:'other',icon:'📦',name:'',price:0});
-  renderQiEdit();
-}
-
-function removeQiRow(i){
-  qiEditData.splice(i,1);renderQiEdit();
-}
-
-function saveQuickItems(){
-  quickItems=JSON.parse(JSON.stringify(qiEditData));
-  localStorage.setItem('pos_quick',JSON.stringify(quickItems));
-  renderQuick();
-  closeModal('quickEditorModal');
-  toast('✅ تم حفظ الأصناف السريعة');
-}
-
-async function doShare(){
-  openShareModal();
-}
-
-
-// ════════════════════════════════════════
-// HISTORY
-// ════════════════════════════════════════
-function loadHistory(){
-  const cur=getCurrency();
-  // Stats
-  const today=new Date().toLocaleDateString('ar',{year:'numeric',month:'2-digit',day:'2-digit'});
-  const todayInvs=history_data.filter(h=>h.date===today);
-  const totalAmt=todayInvs.reduce((s,h)=>s+h.grand,0);
-  g('hCount').textContent=todayInvs.length;
-  g('hTotal').textContent=totalAmt.toFixed(0);
-  g('hAvg').textContent=todayInvs.length?( totalAmt/todayInvs.length).toFixed(0):'0';
-  // List
-  const el=g('histList');
-  if(!history_data.length){
-    el.innerHTML='<div class="empty"><div class="ei">🗂</div><div class="et">لا توجد فواتير محفوظة بعد</div></div>';
-    return;
-  }
-  el.innerHTML=history_data.slice(0,50).map(h=>`
-    <div class="hist-item">
-      <div class="hist-icon">🧾</div>
-      <div class="hist-info">
-        <div class="hist-num">${esc(h.num)} — ${esc(h.store)}</div>
-        <div class="hist-meta">${esc(h.customer)} · ${h.items} صنف · ${esc(h.pay)}</div>
-        <div class="hist-meta">${esc(h.date)} ${esc(h.time)}</div>
-        <span class="hist-badge hb-paid">مكتمل</span>
-      </div>
-      <div class="hist-amt">${h.grand.toFixed(2)}<br><span style="font-size:.65rem;color:var(--text3)">${cur}</span></div>
-    </div>`).join('');
-}
-
-function clearHistory(){
-  if(!confirm('هل تريد مسح جميع الفواتير المحفوظة؟'))return;
-  history_data=[];localStorage.removeItem('pos_history');
-  loadHistory();toast('🗑 تم مسح السجل');
-}
-
-// ════════════════════════════════════════
-// SETTINGS
-// ════════════════════════════════════════
-function togSetting(togId,key){
-  settings[key]=!settings[key];
-  const el=g(togId);
-  el.classList.toggle('on',settings[key]);
-  saveSettings();
-}
-
-function setAccent(c1,c2,el){
-  settings.accentColor=c1;settings.accentLight=c2;
-  document.documentElement.style.setProperty('--gold3',c1);
-  document.documentElement.style.setProperty('--gold',c2);
-  document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('active'));
-  el.classList.add('active');
-  saveSettings();
-  toast('🎨 تم تغيير اللون');
-}
-
-function saveSettings(){
-  settings.currency=g('currSym').value;
-  settings.defTax=parseInt(g('defTax').value)||15;
-  localStorage.setItem('pos_settings',JSON.stringify(settings));
-  g('taxRate').value=settings.defTax;
-  calcAll();
-}
-
-function applySettings(){
-  document.documentElement.style.setProperty('--gold3',settings.accentColor||'#c8930a');
-  document.documentElement.style.setProperty('--gold',settings.accentLight||'#f0c040');
-  if(g('currSym'))g('currSym').value=settings.currency||'ر.س';
-  if(g('defTax'))g('defTax').value=settings.defTax||15;
-  if(g('taxRate'))g('taxRate').value=settings.defTax||15;
-  ['showLogo','showBar','showQR','autoSave','showChange'].forEach(k=>{
-    const map={showLogo:'tog-logo',showBar:'tog-bar',showQR:'tog-qr',autoSave:'tog-save',showChange:'tog-change'};
-    const el=g(map[k]);if(el)el.classList.toggle('on',settings[k]!==false);
-  });
-  // color dot
-  document.querySelectorAll('.color-dot').forEach(d=>{
-    if(d.style.background===settings.accentColor||(d.getAttribute('onclick')||'').includes(settings.accentColor)){
-      d.classList.add('active');
-    }
-  });
-}
-
-function openSettings(){goTab('settings');}
-
-// ════════════════════════════════════════
-// QUICK EDITOR MODAL (simple)
-// ════════════════════════════════════════
-function openQuickEditor(){
-  toast('💡 يمكنك تعديل الأصناف مباشرة من قائمة الأصناف السريعة في المستقبل');
-}
-
-// ════════════════════════════════════════
-// NEW INVOICE
-// ════════════════════════════════════════
-function newInvoice(){
-  if(items.length>0&&!confirm('بدء فاتورة جديدة؟'))return;
-  items=[];renderItems();calcAll();
-  g('custName').value='';g('custPhone').value='';
-  g('discAmt').value='0';g('received').value='0';
-  g('invNum').value='INV-'+String(Math.floor(Math.random()*89000)+10000);
-  goTab('home');toast('✅ فاتورة جديدة جاهزة');
-}
-
-function loadStorePreset(){
-  g('storeName').value='بقالة النور';
-  g('storeAddr').value='شارع الملك فهد، الرياض';
-  g('storePhone').value='0501234567';
-  g('storeTax').value='300123456700003';
-  toast('✅ تم تحميل البيانات النموذجية');
-}
-
-// ════════════════════════════════════════
-// UTILS
-// ════════════════════════════════════════
-function g(id){return document.getElementById(id)}
-function val(id){const e=g(id);return e?e.value.trim():''}
-function getCurrency(){return settings.currency||'ر.س'}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function toast(msg,dur=2800){
-  const t=g('toast');if(!t)return;
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),dur);
-}
-
-// ════════════════════════════════════════
-// CLOCK + HIJRI DATE
-// ════════════════════════════════════════
-const HIJRI_MONTHS=['محرم','صفر','ربيع الأول','ربيع الثاني','جمادى الأولى','جمادى الثانية','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'];
-const DAYS_AR=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-const MONTHS_AR=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-
-function toHijri(date){
-  // Algoritmo de conversión Gregoriana → Hijri
-  let y=date.getFullYear(),m=date.getMonth()+1,d=date.getDate();
-  let jd=Math.floor((1461*(y+4800+Math.floor((m-14)/12)))/4)
-         +Math.floor((367*(m-2-12*Math.floor((m-14)/12)))/12)
-         -Math.floor((3*Math.floor((y+4900+Math.floor((m-14)/12))/100))/4)
-         +d-32075;
-  let l=jd-1948440+10632;
-  let n=Math.floor((l-1)/10631);
-  l=l-10631*n+354;
-  let j=(Math.floor((10985-l)/5316))*(Math.floor((50*l)/17719))+(Math.floor(l/5670))*(Math.floor((43*l)/15238));
-  l=l-(Math.floor((30-j)/15))*(Math.floor((17719*j)/50))-(Math.floor(j/16))*(Math.floor((15238*j)/43))+29;
-  let hm=Math.floor((24*l)/709);
-  let hd=l-Math.floor((709*hm)/24);
-  let hy=30*n+j-30;
-  return{y:hy,m:hm,d:hd};
-}
-
-function updateClock(){
-  const now=new Date();
-  let h=now.getHours();
-  const ampm=h>=12?'م':'ص';
-  h=h%12||12;
-  const hh=String(h).padStart(2,'0');
-  const mm=String(now.getMinutes()).padStart(2,'0');
-  const ss=String(now.getSeconds()).padStart(2,'0');
-  const clkH=g('clkH'),clkM=g('clkM'),clkS=g('clkS'),clkAP=g('clkAMPM');
-  if(clkH){clkH.textContent=hh;clkM.textContent=mm;clkS.textContent=ss;}
-  if(clkAP)clkAP.textContent=' '+ampm;
-
-  const hij=toHijri(now);
-  const dayName=DAYS_AR[now.getDay()];
-  const hijriStr=`${dayName} — ${hij.d} ${HIJRI_MONTHS[hij.m-1]} ${hij.y} هـ`;
-  const miladiStr=`${now.getDate()} ${MONTHS_AR[now.getMonth()]} ${now.getFullYear()} م`;
-  if(g('clkHijri')){g('clkHijri').textContent=hijriStr;g('clkMiladi').textContent=miladiStr;}
-}
-setInterval(updateClock,1000);
-updateClock();
-
-// ════════════════════════════════════════
-// CALCULATOR
-// ════════════════════════════════════════
-let calcCur='0',calcExprStr='',calcNewNum=true,calcHasResult=false;
-function calcDisplay(){
-  const rEl=g('calcResult'),eEl=g('calcExpr');
-  if(rEl)rEl.textContent=calcCur;
-  if(eEl)eEl.textContent=calcExprStr;
-}
-function calcNum(n){
-  if(calcHasResult){calcExprStr='';calcHasResult=false;}
-  if(calcNewNum){calcCur=n;calcNewNum=false;}
-  else{calcCur=(calcCur==='0'&&n!=='.')?n:calcCur+n;}
-  if(n==='.'&&calcCur.split('.').length>2)calcCur=calcCur.slice(0,-1);
-  calcDisplay();
-}
-function calcOp(op){
-  calcHasResult=false;
-  calcExprStr=calcCur+' '+op;
-  calcNewNum=true;
-  calcDisplay();
-}
-function calcEquals(){
-  try{
-    const expr=calcExprStr+calcCur;
-    const res=Function('"use strict";return ('+expr+')')();
-    calcCur=parseFloat(res.toFixed(10)).toString();
-    calcExprStr=expr+' =';
-    calcHasResult=true;calcNewNum=true;
-  }catch{calcCur='خطأ';calcNewNum=true;}
-  calcDisplay();
-}
-function calcAC(){calcCur='0';calcExprStr='';calcNewNum=true;calcHasResult=false;calcDisplay();}
-function calcSign(){if(calcCur!=='0'&&calcCur!=='خطأ')calcCur=(parseFloat(calcCur)*-1).toString();calcDisplay();}
-function calcPct(){if(calcCur!=='خطأ')calcCur=(parseFloat(calcCur)/100).toString();calcDisplay();}
-function calcDot(){if(calcNewNum){calcCur='0.';calcNewNum=false;}else if(!calcCur.includes('.'))calcCur+='.';calcDisplay();}
-
-// ════════════════════════════════════════
-// CURRENCY (EGP)
-// ════════════════════════════════════════
-// أسعار تقريبية مضمّنة كاحتياط — يتم تحديثها من API عند الاتصال
-let fxRates={USD:1,EGP:50.9,SAR:3.75,AED:3.67,EUR:0.92,GBP:0.79,KWD:0.307};
-let fxLoaded=false;
-
-async function fetchRates(){
-  try{
-    const r=await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-    if(!r.ok)throw new Error();
-    const d=await r.json();
-    ['EGP','SAR','AED','EUR','GBP','KWD'].forEach(c=>{if(d.rates[c])fxRates[c]=d.rates[c];});
-    fxLoaded=true;
-    const egp=fxRates.EGP.toFixed(2);
-    if(g('egpRateDisplay'))g('egpRateDisplay').textContent=`1 $ = ${egp} ج.م`;
-    if(g('egpUpdated'))g('egpUpdated').textContent=`آخر تحديث: الآن ✅`;
-    doConvert();
-  }catch{
-    if(g('egpRateDisplay'))g('egpRateDisplay').textContent=`1 $ ≈ ${fxRates.EGP.toFixed(2)} ج.م`;
-    if(g('egpUpdated'))g('egpUpdated').textContent='أسعار تقريبية (بدون إنترنت)';
-    doConvert();
-  }
-}
-
-function doConvert(){
-  const amt=parseFloat(g('convFrom')?.value||'1')||0;
-  const from=g('convCurFrom')?.value||'USD';
-  const to=g('convCurTo')?.value||'EGP';
-  const inUSD=amt/fxRates[from];
-  const result=inUSD*fxRates[to];
-  if(g('convResult')){
-    const sym={USD:'$',EGP:'ج.م',SAR:'ر.س',AED:'د.إ',EUR:'€',GBP:'£',KWD:'د.ك'};
-    g('convResult').textContent=`${result.toLocaleString('ar',{maximumFractionDigits:2})} ${sym[to]||to}`;
-  }
-}
-
-fetchRates();
-
-// ════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════
-applySettings();
-renderQuick();
-addItem('ماء معدني 1.5L',3,1.50);
-addItem('خبز توست',1,4.75);
-addItem('حليب طازج',2,6.50);
-calcAll();
-</script>
 </body>
 </html>
