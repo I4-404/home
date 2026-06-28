@@ -490,6 +490,109 @@
         .hijri-date{font-size:20px;font-weight:800;color:var(--rose-deep);}
         [data-theme="dark"] .hijri-date{color:#f0a0c0;}
         .greg-date{font-size:13px;color:var(--text-soft);margin-top:4px;}
+
+        /* ===== SETTINGS PAGE ===== */
+        .settings-section{margin-bottom:28px;}
+        .settings-section-title{
+            font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+            color:var(--rose);margin-bottom:14px;display:flex;align-items:center;gap:8px;
+            padding-bottom:8px;border-bottom:1.5px dashed var(--border);
+        }
+        .settings-row{
+            display:flex;align-items:center;justify-content:space-between;
+            background:var(--card-bg);border-radius:18px;padding:14px 18px;
+            border:1px solid var(--border);margin-bottom:10px;gap:14px;transition:all 0.3s;
+        }
+        .settings-row:hover{border-color:var(--rose-light);box-shadow:0 4px 14px var(--shadow);}
+        .settings-row-info{flex:1;}
+        .settings-row-label{font-size:15px;font-weight:600;color:var(--text-dark);margin-bottom:2px;}
+        [data-theme="dark"] .settings-row-label{color:var(--text-mid);}
+        .settings-row-desc{font-size:12px;color:var(--text-soft);}
+        .settings-toggle{
+            width:52px;height:28px;background:var(--border);border-radius:30px;
+            position:relative;cursor:pointer;transition:all 0.3s;flex-shrink:0;border:none;outline:none;
+        }
+        .settings-toggle.on{background:linear-gradient(135deg,var(--rose),var(--lilac));}
+        .settings-toggle::after{
+            content:'';width:22px;height:22px;background:#fff;border-radius:50%;
+            position:absolute;top:3px;right:3px;transition:all 0.3s;box-shadow:0 2px 5px rgba(0,0,0,0.2);
+        }
+        .settings-toggle.on::after{right:27px;}
+
+        /* Color Picker */
+        .color-palette{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
+        .color-dot{
+            width:32px;height:32px;border-radius:50%;cursor:pointer;border:3px solid transparent;
+            transition:all 0.25s;box-shadow:0 2px 8px rgba(0,0,0,0.15);
+        }
+        .color-dot.active{border-color:var(--text-dark);transform:scale(1.2);}
+        [data-theme="dark"] .color-dot.active{border-color:#fff;}
+
+        /* Font Size Selector */
+        .font-size-btns{display:flex;gap:8px;}
+        .font-size-btn{
+            padding:6px 16px;border-radius:50px;border:2px solid var(--border);
+            background:var(--input-bg);color:var(--text-mid);cursor:pointer;font-family:'Tajawal',sans-serif;
+            transition:all 0.25s;font-weight:600;
+        }
+        .font-size-btn.active{background:var(--btn);color:#fff;border-color:var(--rose);}
+
+        /* Stats Reset section */
+        .danger-zone{background:linear-gradient(135deg,#fff5f5,#ffe8e8);border:1.5px solid #ffcccc;border-radius:18px;padding:18px 20px;margin-top:10px;}
+        [data-theme="dark"] .danger-zone{background:linear-gradient(135deg,#2d1010,#251020);border-color:#5a1a1a;}
+        .danger-zone h4{color:#cc4444;margin-bottom:8px;font-size:15px;}
+        [data-theme="dark"] .danger-zone h4{color:#ff8888;}
+        .btn-danger{background:linear-gradient(135deg,#e05555,#c03030);color:#fff;border:none;padding:9px 18px;border-radius:50px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:600;transition:all 0.3s;display:inline-flex;align-items:center;gap:7px;margin-top:6px;margin-left:8px;}
+        .btn-danger:hover{transform:scale(1.05);box-shadow:0 4px 14px rgba(200,50,50,0.35);}
+        .btn-success{background:linear-gradient(135deg,#44bb77,#228844);color:#fff;border:none;padding:9px 18px;border-radius:50px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:600;transition:all 0.3s;display:inline-flex;align-items:center;gap:7px;margin-top:6px;}
+        .btn-success:hover{transform:scale(1.05);}
+
+        /* Profile Card */
+        .profile-card{
+            background:linear-gradient(135deg,var(--rose-pale),var(--lilac-light));
+            border-radius:24px;padding:24px;text-align:center;margin-bottom:24px;border:1px solid var(--border);
+        }
+        [data-theme="dark"] .profile-card{background:linear-gradient(135deg,#2a1020,#221530);}
+        .profile-avatar{
+            width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--rose),var(--lilac));
+            display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;
+            border:3px solid var(--white);box-shadow:0 4px 16px var(--shadow);cursor:pointer;transition:all 0.3s;
+        }
+        .profile-avatar:hover{transform:scale(1.08);}
+        .profile-name-input{
+            font-size:20px;font-weight:700;color:var(--rose-deep);background:transparent;border:none;
+            outline:none;text-align:center;font-family:'Tajawal',sans-serif;width:100%;
+            border-bottom:2px dashed var(--border);padding-bottom:4px;margin-bottom:6px;
+        }
+        [data-theme="dark"] .profile-name-input{color:#f080a8;}
+        .profile-bio-input{
+            font-size:13px;color:var(--text-soft);background:transparent;border:none;outline:none;
+            text-align:center;font-family:'Tajawal',sans-serif;width:100%;resize:none;
+        }
+        .profile-stats-mini{display:flex;justify-content:center;gap:20px;margin-top:14px;}
+        .pstat{text-align:center;}
+        .pstat-num{font-size:22px;font-weight:800;color:var(--rose-deep);}
+        [data-theme="dark"] .pstat-num{color:#f080a8;}
+        .pstat-lbl{font-size:11px;color:var(--text-soft);}
+
+        /* Notification Preview */
+        .notif-preview{
+            background:var(--card-bg);border-radius:18px;padding:14px 18px;border:1px solid var(--border);
+            display:flex;align-items:center;gap:12px;opacity:0.5;pointer-events:none;transition:all 0.3s;
+        }
+        .notif-preview.active-preview{opacity:1;}
+        .notif-icon{font-size:28px;}
+        .notif-text{font-size:14px;color:var(--text-dark);font-weight:500;}
+        [data-theme="dark"] .notif-text{color:var(--text-mid);}
+        .notif-time{font-size:11px;color:var(--text-soft);}
+
+        /* App Info */
+        .app-info-card{
+            background:var(--card-bg);border-radius:22px;padding:20px;border:1px solid var(--border);
+            text-align:center;
+        }
+        .app-version{font-size:13px;color:var(--text-soft);margin-top:4px;}
+        .app-logo-big{font-size:48px;margin-bottom:8px;}
     </style>
 </head>
 <body>
@@ -518,6 +621,7 @@
             <li><a href="#" data-page="quotes"><i class="fas fa-quote-right"></i> اقتباسات ملهمة</a></li>
             <li><a href="#" data-page="achievements"><i class="fas fa-trophy"></i> إنجازاتي</a></li>
             <li><a href="#" data-page="tools"><i class="fas fa-tools"></i> أدواتي</a></li>
+            <li><a href="#" data-page="settings"><i class="fas fa-gear"></i> الإعدادات</a></li>
         </ul>
     </div>
     <div class="theme-btn" id="themeToggle">
@@ -561,6 +665,7 @@
             <div class="nav-card" onclick="go('quotes')"><span class="icon">💬</span><span>اقتباسات</span></div>
             <div class="nav-card" onclick="go('achievements')"><span class="icon">🏆</span><span>إنجازاتي</span></div>
             <div class="nav-card" onclick="go('tools')"><span class="icon">🛠️</span><span>أدواتي</span></div>
+            <div class="nav-card" onclick="go('settings')"><span class="icon">⚙️</span><span>الإعدادات</span></div>
         </div>
         <div style="text-align:center;margin-top:34px;color:var(--text-soft);font-size:13px;">
             <i class="fas fa-heart" style="color:var(--rose);"></i> كل ما تحتاجينه في مكان واحد
@@ -960,6 +1065,266 @@
         <div class="asma-grid" id="asma-grid"></div>
     </div>
 
+    <!-- SETTINGS -->
+    <div id="settings" class="page">
+        <div class="page-head">
+            <h1><i class="fas fa-gear"></i> الإعدادات</h1>
+            <p>خصّصي التطبيق على كيفكِ ⚙️✨</p>
+        </div>
+
+        <!-- PROFILE CARD -->
+        <div class="profile-card">
+            <div class="profile-avatar" id="avatarBtn" onclick="cycleAvatar()" title="اضغطي لتغيير الصورة">
+                <span id="avatarEmoji">🌸</span>
+            </div>
+            <input class="profile-name-input" id="profileName" value="بنوتة" maxlength="20" placeholder="اسمكِ..." oninput="saveProfile()">
+            <textarea class="profile-bio-input" id="profileBio" rows="1" maxlength="60" placeholder="عبارة تعبّر عنكِ..." oninput="saveProfile()"></textarea>
+            <div class="profile-stats-mini">
+                <div class="pstat"><div class="pstat-num" id="s-points">0</div><div class="pstat-lbl">نقطة</div></div>
+                <div class="pstat"><div class="pstat-num" id="s-level">1</div><div class="pstat-lbl">مستوى</div></div>
+                <div class="pstat"><div class="pstat-num" id="s-streak">0</div><div class="pstat-lbl">يوم متواصل</div></div>
+            </div>
+        </div>
+
+        <!-- APPEARANCE -->
+        <div class="settings-section">
+            <div class="settings-section-title"><i class="fas fa-palette"></i> المظهر والألوان</div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-moon" style="color:var(--rose);margin-left:8px;"></i> الوضع الداكن</div>
+                    <div class="settings-row-desc">تغيير بين الوضع النهاري والليلي</div>
+                </div>
+                <button class="settings-toggle" id="darkModeToggle" onclick="toggleDarkMode()"></button>
+            </div>
+
+            <div class="settings-row" style="flex-direction:column;align-items:flex-start;">
+                <div class="settings-row-label" style="margin-bottom:12px;"><i class="fas fa-droplet" style="color:var(--rose);margin-left:8px;"></i> لون التطبيق الرئيسي</div>
+                <div class="color-palette" id="colorPalette">
+                    <div class="color-dot active" style="background:linear-gradient(135deg,#e8789a,#dda0c8);" data-theme-color="rose" onclick="setAppColor('rose',this)" title="وردي 🌸"></div>
+                    <div class="color-dot" style="background:linear-gradient(135deg,#7c83e0,#a78bfa);" data-theme-color="violet" onclick="setAppColor('violet',this)" title="بنفسجي 💜"></div>
+                    <div class="color-dot" style="background:linear-gradient(135deg,#34d399,#059669);" data-theme-color="mint" onclick="setAppColor('mint',this)" title="أخضر نعناعي 🌿"></div>
+                    <div class="color-dot" style="background:linear-gradient(135deg,#fb923c,#ea580c);" data-theme-color="peach" onclick="setAppColor('peach',this)" title="برتقالي 🍑"></div>
+                    <div class="color-dot" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9);" data-theme-color="sky" onclick="setAppColor('sky',this)" title="سماوي 💙"></div>
+                    <div class="color-dot" style="background:linear-gradient(135deg,#f472b6,#be185d);" data-theme-color="fuchsia" onclick="setAppColor('fuchsia',this)" title="فوشيا 💗"></div>
+                    <div class="color-dot" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);" data-theme-color="purple" onclick="setAppColor('purple',this)" title="بنفسجي غامق 🔮"></div>
+                    <div class="color-dot" style="background:linear-gradient(135deg,#fcd34d,#f59e0b);" data-theme-color="gold" onclick="setAppColor('gold',this)" title="ذهبي ✨"></div>
+                </div>
+            </div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-text-height" style="color:var(--rose);margin-left:8px;"></i> حجم الخط</div>
+                    <div class="settings-row-desc">اختاري حجم الخط المناسب لعينيكِ</div>
+                </div>
+                <div class="font-size-btns">
+                    <button class="font-size-btn" onclick="setFontSize('small',this)">ص</button>
+                    <button class="font-size-btn active" onclick="setFontSize('medium',this)">م</button>
+                    <button class="font-size-btn" onclick="setFontSize('large',this)">ك</button>
+                </div>
+            </div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-wand-magic-sparkles" style="color:var(--rose);margin-left:8px;"></i> تأثيرات الحركة</div>
+                    <div class="settings-row-desc">تعطيل / تفعيل الأنيميشن في التطبيق</div>
+                </div>
+                <button class="settings-toggle on" id="animToggle" onclick="toggleAnimations()"></button>
+            </div>
+        </div>
+
+        <!-- NOTIFICATIONS & REMINDERS -->
+        <div class="settings-section">
+            <div class="settings-section-title"><i class="fas fa-bell"></i> التذكيرات اليومية</div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-sun" style="color:#f59e0b;margin-left:8px;"></i> تذكير أذكار الصباح</div>
+                    <div class="settings-row-desc">تذكير يومي بعد الفجر للأذكار</div>
+                </div>
+                <button class="settings-toggle on" id="morningToggle" onclick="toggleReminder('morning')"></button>
+            </div>
+            <div class="notif-preview active-preview" id="morning-preview">
+                <span class="notif-icon">☀️</span>
+                <div><div class="notif-text">حان وقت أذكار الصباح 🌸</div><div class="notif-time">كل يوم • 06:00 صباحاً</div></div>
+            </div>
+
+            <div class="settings-row" style="margin-top:12px;">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-moon" style="color:#7c3aed;margin-left:8px;"></i> تذكير أذكار المساء</div>
+                    <div class="settings-row-desc">تذكير بعد العصر لأذكار المساء</div>
+                </div>
+                <button class="settings-toggle on" id="eveningToggle" onclick="toggleReminder('evening')"></button>
+            </div>
+            <div class="notif-preview active-preview" id="evening-preview">
+                <span class="notif-icon">🌙</span>
+                <div><div class="notif-text">حان وقت أذكار المساء 💜</div><div class="notif-time">كل يوم • 05:00 مساءً</div></div>
+            </div>
+
+            <div class="settings-row" style="margin-top:12px;">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-tint" style="color:#0ea5e9;margin-left:8px;"></i> تذكير شرب الماء</div>
+                    <div class="settings-row-desc">كل ساعتين من 8ص حتى 10م</div>
+                </div>
+                <button class="settings-toggle" id="waterToggle" onclick="toggleReminder('water')"></button>
+            </div>
+            <div class="notif-preview" id="water-preview">
+                <span class="notif-icon">💧</span>
+                <div><div class="notif-text">لا تنسي تشربي كوب ماء! 💙</div><div class="notif-time">كل ساعتين</div></div>
+            </div>
+
+            <div class="settings-row" style="margin-top:12px;">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-quran" style="color:var(--rose);margin-left:8px;"></i> تذكير ورد القرآن</div>
+                    <div class="settings-row-desc">تذكير يومي لقراءة وردك</div>
+                </div>
+                <button class="settings-toggle" id="quranReminderToggle" onclick="toggleReminder('quranDaily')"></button>
+            </div>
+            <div class="notif-preview" id="quranDaily-preview">
+                <span class="notif-icon">📖</span>
+                <div><div class="notif-text">اقرئي وردكِ اليومي من القرآن 🌿</div><div class="notif-time">كل يوم • 08:00 صباحاً</div></div>
+            </div>
+        </div>
+
+        <!-- PRIVACY -->
+        <div class="settings-section">
+            <div class="settings-section-title"><i class="fas fa-shield-halved"></i> الخصوصية والأمان</div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-lock" style="color:var(--rose);margin-left:8px;"></i> قفل التطبيق برمز</div>
+                    <div class="settings-row-desc">أدخلي رمز PIN لحماية بياناتكِ</div>
+                </div>
+                <button class="settings-toggle" id="pinToggle" onclick="togglePinLock()"></button>
+            </div>
+            <div id="pin-setup" style="display:none;background:var(--card-bg);border-radius:14px;padding:14px;border:1px solid var(--border);margin-top:-4px;margin-bottom:10px;">
+                <div style="font-size:13px;color:var(--text-soft);margin-bottom:8px;">🔐 أدخلي رمز PIN مكوّن من 4 أرقام</div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <input type="password" id="pinInput" maxlength="4" inputmode="numeric" placeholder="••••" style="background:var(--input-bg);border:1.5px solid var(--border);border-radius:12px;padding:8px 14px;font-size:18px;width:100px;text-align:center;font-family:'Tajawal',sans-serif;color:var(--text-dark);outline:none;">
+                    <button class="btn btn-sm" onclick="savePin()"><i class="fas fa-check"></i> حفظ</button>
+                </div>
+            </div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-eye-slash" style="color:var(--rose);margin-left:8px;"></i> إخفاء نتيجة متابعة الدورة</div>
+                    <div class="settings-row-desc">تشفير نتيجة الدورة في الشاشة الرئيسية</div>
+                </div>
+                <button class="settings-toggle" id="hideCycleToggle" onclick="toggleHideCycle()"></button>
+            </div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-floppy-disk" style="color:var(--rose);margin-left:8px;"></i> تصدير بياناتي</div>
+                    <div class="settings-row-desc">تنزيل نسخة من بياناتكِ المحفوظة</div>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="exportData()"><i class="fas fa-download"></i> تصدير</button>
+            </div>
+        </div>
+
+        <!-- CONTENT PREFERENCES -->
+        <div class="settings-section">
+            <div class="settings-section-title"><i class="fas fa-sliders"></i> تفضيلات المحتوى</div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-quote-right" style="color:var(--rose);margin-left:8px;"></i> عرض اقتباس في الرئيسية</div>
+                    <div class="settings-row-desc">اقتباس ملهم يتغير كل زيارة</div>
+                </div>
+                <button class="settings-toggle on" id="homeQuoteToggle" onclick="togglePref('homeQuote')"></button>
+            </div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-fire" style="color:#f97316;margin-left:8px;"></i> عرض سلسلة الزيارات</div>
+                    <div class="settings-row-desc">إظهار عداد الأيام المتواصلة</div>
+                </div>
+                <button class="settings-toggle on" id="streakToggle" onclick="togglePref('showStreak')"></button>
+            </div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-hands-praying" style="color:var(--rose);margin-left:8px;"></i> دعاء اليوم في الرئيسية</div>
+                    <div class="settings-row-desc">عرض مربع الدعاء في الصفحة الرئيسية</div>
+                </div>
+                <button class="settings-toggle on" id="duaaToggle" onclick="togglePref('showDuaa')"></button>
+            </div>
+
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <div class="settings-row-label"><i class="fas fa-volume-high" style="color:var(--rose);margin-left:8px;"></i> أصوات التطبيق</div>
+                    <div class="settings-row-desc">تشغيل صوت عند إتمام الأهداف</div>
+                </div>
+                <button class="settings-toggle on" id="soundToggle" onclick="togglePref('appSounds')"></button>
+            </div>
+        </div>
+
+        <!-- GOALS -->
+        <div class="settings-section">
+            <div class="settings-section-title"><i class="fas fa-bullseye"></i> الأهداف اليومية</div>
+            <div class="card">
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <label style="font-size:14px;color:var(--text-dark);font-weight:600;">💧 هدف الماء (أكواب)</label>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="btn-icon" onclick="changeGoal('water',-1)"><i class="fas fa-minus"></i></button>
+                            <span style="font-size:18px;font-weight:800;color:var(--rose-deep);min-width:30px;text-align:center;" id="goal-water">8</span>
+                            <button class="btn-icon" onclick="changeGoal('water',1)"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <label style="font-size:14px;color:var(--text-dark);font-weight:600;">📿 هدف التسبيح (مرة)</label>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="btn-icon" onclick="changeGoal('tasbeeh',-10)"><i class="fas fa-minus"></i></button>
+                            <span style="font-size:18px;font-weight:800;color:var(--rose-deep);min-width:40px;text-align:center;" id="goal-tasbeeh">33</span>
+                            <button class="btn-icon" onclick="changeGoal('tasbeeh',10)"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <label style="font-size:14px;color:var(--text-dark);font-weight:600;">📖 هدف القراءة (دقيقة)</label>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="btn-icon" onclick="changeGoal('reading',-5)"><i class="fas fa-minus"></i></button>
+                            <span style="font-size:18px;font-weight:800;color:var(--rose-deep);min-width:40px;text-align:center;" id="goal-reading">20</span>
+                            <button class="btn-icon" onclick="changeGoal('reading',5)"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-sm" style="margin-top:14px;" onclick="saveGoals()"><i class="fas fa-check"></i> حفظ الأهداف</button>
+                <div id="goals-saved-msg" style="font-size:13px;color:#22a855;margin-top:6px;display:none;">✅ تم حفظ الأهداف!</div>
+            </div>
+        </div>
+
+        <!-- DANGER ZONE -->
+        <div class="settings-section">
+            <div class="settings-section-title"><i class="fas fa-triangle-exclamation"></i> منطقة الخطر</div>
+            <div class="danger-zone">
+                <h4><i class="fas fa-trash"></i> حذف البيانات</h4>
+                <p style="font-size:13px;color:var(--text-soft);margin-bottom:10px;">تحذير: هذه العمليات لا يمكن التراجع عنها!</p>
+                <button class="btn-danger" onclick="resetStats()"><i class="fas fa-chart-bar"></i> مسح الإحصائيات</button>
+                <button class="btn-danger" onclick="resetPoints()"><i class="fas fa-star"></i> مسح النقاط</button>
+                <button class="btn-danger" onclick="resetAllData()"><i class="fas fa-bomb"></i> مسح كل البيانات</button>
+            </div>
+        </div>
+
+        <!-- APP INFO -->
+        <div class="settings-section">
+            <div class="settings-section-title"><i class="fas fa-circle-info"></i> معلومات التطبيق</div>
+            <div class="app-info-card">
+                <div class="app-logo-big">🌸</div>
+                <div style="font-size:20px;font-weight:800;color:var(--rose-deep);">ركن البنات</div>
+                <div class="app-version">الإصدار 2.0 — محدّث ✨</div>
+                <div style="color:var(--text-soft);font-size:13px;margin-top:10px;line-height:1.8;">
+                    تطبيق مصمّم خصيصاً للمرأة المسلمة<br>دين • تعلّم • ترفيه • صحة — كل شيء في مكان واحد
+                </div>
+                <div style="margin-top:14px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+                    <span style="background:var(--rose-pale);padding:6px 14px;border-radius:50px;font-size:12px;color:var(--rose-deep);border:1px solid var(--border);">❤️ مصنوع بحب</span>
+                    <span style="background:var(--rose-pale);padding:6px 14px;border-radius:50px;font-size:12px;color:var(--rose-deep);border:1px solid var(--border);">🔒 بياناتكِ آمنة</span>
+                    <span style="background:var(--rose-pale);padding:6px 14px;border-radius:50px;font-size:12px;color:var(--rose-deep);border:1px solid var(--border);">📵 يعمل بدون نت</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- HEALTH -->
     <div id="health" class="page">
         <div class="page-head">
@@ -1042,6 +1407,9 @@
     </div>
 
 </div><!-- end main -->
+
+<!-- ========== SETTINGS PAGE ========== -->
+<div id="settings-page-wrapper" style="display:none;position:fixed;inset:0;z-index:2000;background:var(--cream);overflow-y:auto;padding:0;transition:background 0.4s;"></div>
 
 <script>
 // ===== DATA =====
@@ -1492,8 +1860,10 @@ function go(pageId){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.sidebar-nav a').forEach(a=>a.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
-    document.querySelector(`.sidebar-nav a[data-page="${pageId}"]`).classList.add('active');
+    const navA=document.querySelector(`.sidebar-nav a[data-page="${pageId}"]`);
+    if(navA)navA.classList.add('active');
     if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');document.querySelector('#menuToggle i').className='fas fa-bars';}
+    if(pageId==='settings'){loadProfile();syncDarkToggle();}
 }
 
 document.querySelectorAll('.sidebar-nav a').forEach(a=>{
@@ -1846,6 +2216,269 @@ loadCycle();
 updateHijri();
 renderTodos();
 newQuote();
+
+// ===== SETTINGS =====
+
+// ---- Profile ----
+const avatarEmojis = ['🌸','🌷','🌺','🦋','⭐','🌙','💖','👑','🌹','🌻','🍀','✨','🎀','🌈','🕊️','🦄'];
+let avatarIdx = parseInt(localStorage.getItem('avatarIdx')||'0');
+function cycleAvatar(){
+    avatarIdx=(avatarIdx+1)%avatarEmojis.length;
+    document.getElementById('avatarEmoji').textContent=avatarEmojis[avatarIdx];
+    localStorage.setItem('avatarIdx',avatarIdx);
+}
+function saveProfile(){
+    localStorage.setItem('profileName',document.getElementById('profileName').value);
+    localStorage.setItem('profileBio',document.getElementById('profileBio').value);
+}
+function loadProfile(){
+    const name=localStorage.getItem('profileName');
+    const bio=localStorage.getItem('profileBio');
+    const idx=parseInt(localStorage.getItem('avatarIdx')||'0');
+    if(name)document.getElementById('profileName').value=name;
+    if(bio)document.getElementById('profileBio').value=bio;
+    document.getElementById('avatarEmoji').textContent=avatarEmojis[idx];
+    avatarIdx=idx;
+    // sync mini stats
+    const {lvl}=levelInfo();
+    const es=id=>document.getElementById(id);
+    if(es('s-points'))es('s-points').textContent=points;
+    if(es('s-level'))es('s-level').textContent=lvl;
+    if(es('s-streak'))es('s-streak').textContent=streak;
+}
+
+// ---- Color Themes ----
+const colorThemes={
+    rose:   {rose:'#e8789a','rose-light':'#f9c6d8','rose-pale':'#fff0f5','rose-deep':'#c0537a','lilac':'#dda0c8','lilac-light':'#f5e6f5'},
+    violet: {rose:'#7c83e0','rose-light':'#c4c8f8','rose-pale':'#f0f0ff','rose-deep':'#4a50c0','lilac':'#a78bfa','lilac-light':'#ede9fe'},
+    mint:   {rose:'#34d399','rose-light':'#a7f3d0','rose-pale':'#f0fdf4','rose-deep':'#059669','lilac':'#6ee7b7','lilac-light':'#d1fae5'},
+    peach:  {rose:'#fb923c','rose-light':'#fed7aa','rose-pale':'#fff7ed','rose-deep':'#ea580c','lilac':'#fdba74','lilac-light':'#ffedd5'},
+    sky:    {rose:'#38bdf8','rose-light':'#bae6fd','rose-pale':'#f0f9ff','rose-deep':'#0284c7','lilac':'#7dd3fc','lilac-light':'#e0f2fe'},
+    fuchsia:{rose:'#f472b6','rose-light':'#fbcfe8','rose-pale':'#fdf2f8','rose-deep':'#be185d','lilac':'#f9a8d4','lilac-light':'#fce7f3'},
+    purple: {rose:'#a78bfa','rose-light':'#ddd6fe','rose-pale':'#f5f3ff','rose-deep':'#7c3aed','lilac':'#c4b5fd','lilac-light':'#ede9fe'},
+    gold:   {rose:'#fbbf24','rose-light':'#fde68a','rose-pale':'#fffbeb','rose-deep':'#d97706','lilac':'#fcd34d','lilac-light':'#fef3c7'},
+};
+function setAppColor(name, dotEl){
+    const t=colorThemes[name];
+    if(!t)return;
+    const root=document.documentElement;
+    Object.keys(t).forEach(k=>root.style.setProperty('--'+k,t[k]));
+    // update btn gradient
+    root.style.setProperty('--btn',`linear-gradient(135deg,${t.rose},${t['rose-deep']})`);
+    localStorage.setItem('appColor',name);
+    document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('active'));
+    if(dotEl)dotEl.classList.add('active');
+}
+function loadAppColor(){
+    const saved=localStorage.getItem('appColor')||'rose';
+    const dot=document.querySelector(`.color-dot[data-theme-color="${saved}"]`);
+    setAppColor(saved,dot);
+}
+
+// ---- Dark Mode Sync ----
+function syncDarkToggle(){
+    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    const t=document.getElementById('darkModeToggle');
+    if(t)t.classList.toggle('on',isDark);
+}
+function toggleDarkMode(){
+    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    if(isDark){
+        document.documentElement.removeAttribute('data-theme');
+        document.getElementById('themeIcon').className='fas fa-moon';
+        document.getElementById('themeLabel').textContent='الوضع الداكن';
+        localStorage.setItem('theme','light');
+    } else {
+        document.documentElement.setAttribute('data-theme','dark');
+        document.getElementById('themeIcon').className='fas fa-sun';
+        document.getElementById('themeLabel').textContent='الوضع النهاري';
+        localStorage.setItem('theme','dark');
+    }
+    syncDarkToggle();
+}
+
+// ---- Font Size ----
+function setFontSize(size,btn){
+    const sizes={small:'14px',medium:'16px',large:'19px'};
+    document.body.style.fontSize=sizes[size]||'16px';
+    localStorage.setItem('fontSize',size);
+    document.querySelectorAll('.font-size-btn').forEach(b=>b.classList.remove('active'));
+    if(btn)btn.classList.add('active');
+}
+function loadFontSize(){
+    const s=localStorage.getItem('fontSize')||'medium';
+    const map={small:0,medium:1,large:2};
+    const btns=document.querySelectorAll('.font-size-btn');
+    if(btns[map[s]])btns[map[s]].classList.add('active');
+    const sizes={small:'14px',medium:'16px',large:'19px'};
+    document.body.style.fontSize=sizes[s]||'16px';
+}
+
+// ---- Animations ----
+function toggleAnimations(){
+    const t=document.getElementById('animToggle');
+    const isOn=t.classList.toggle('on');
+    if(!isOn){
+        const s=document.createElement('style');
+        s.id='no-anim-style';
+        s.textContent='*{animation:none!important;transition:none!important;}';
+        document.head.appendChild(s);
+    } else {
+        const s=document.getElementById('no-anim-style');
+        if(s)s.remove();
+    }
+    localStorage.setItem('animations',isOn?'on':'off');
+}
+
+// ---- Reminders ----
+const reminders={morning:true,evening:true,water:false,quranDaily:false};
+function toggleReminder(name){
+    reminders[name]=!reminders[name];
+    const idMap={morning:'morningToggle',evening:'eveningToggle',water:'waterToggle',quranDaily:'quranReminderToggle'};
+    const t=document.getElementById(idMap[name]);
+    if(t)t.classList.toggle('on',reminders[name]);
+    const prev=document.getElementById(name+'-preview');
+    if(prev)prev.classList.toggle('active-preview',reminders[name]);
+    localStorage.setItem('reminder-'+name,reminders[name]?'1':'0');
+}
+function loadReminders(){
+    ['morning','evening','water','quranDaily'].forEach(k=>{
+        const saved=localStorage.getItem('reminder-'+k);
+        if(saved!==null)reminders[k]=saved==='1';
+        const idMap={morning:'morningToggle',evening:'eveningToggle',water:'waterToggle',quranDaily:'quranReminderToggle'};
+        const t=document.getElementById(idMap[k]);
+        if(t)t.classList.toggle('on',reminders[k]);
+        const prev=document.getElementById(k+'-preview');
+        if(prev)prev.classList.toggle('active-preview',reminders[k]);
+    });
+}
+
+// ---- PIN Lock ----
+let pinEnabled=false;
+function togglePinLock(){
+    pinEnabled=!pinEnabled;
+    const t=document.getElementById('pinToggle');
+    if(t)t.classList.toggle('on',pinEnabled);
+    const setup=document.getElementById('pin-setup');
+    if(setup)setup.style.display=pinEnabled?'block':'none';
+    if(!pinEnabled){localStorage.removeItem('appPin');localStorage.setItem('pinEnabled','0');}
+}
+function savePin(){
+    const pin=document.getElementById('pinInput').value;
+    if(pin.length<4){alert('الرمز يجب أن يكون 4 أرقام');return;}
+    localStorage.setItem('appPin',pin);
+    localStorage.setItem('pinEnabled','1');
+    document.getElementById('pin-setup').style.display='none';
+    alert('✅ تم حفظ الرمز بنجاح!');
+}
+
+// ---- Hide Cycle ----
+function toggleHideCycle(){
+    const t=document.getElementById('hideCycleToggle');
+    const isOn=t.classList.toggle('on');
+    localStorage.setItem('hideCycle',isOn?'1':'0');
+    const r=document.getElementById('cycle-result');
+    if(r)r.style.filter=isOn?'blur(6px)':'none';
+}
+
+// ---- Export Data ----
+function exportData(){
+    const data={};
+    for(let i=0;i<localStorage.length;i++){
+        const k=localStorage.key(i);
+        data[k]=localStorage.getItem(k);
+    }
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='ركن_البنات_بياناتي.json';
+    a.click();
+}
+
+// ---- Preferences ----
+const prefs={homeQuote:true,showStreak:true,showDuaa:true,appSounds:true};
+function togglePref(name){
+    prefs[name]=!prefs[name];
+    const idMap={homeQuote:'homeQuoteToggle',showStreak:'streakToggle',showDuaa:'duaaToggle',appSounds:'soundToggle'};
+    const t=document.getElementById(idMap[name]);
+    if(t)t.classList.toggle('on',prefs[name]);
+    localStorage.setItem('pref-'+name,prefs[name]?'1':'0');
+    applyPrefs();
+}
+function loadPrefs(){
+    ['homeQuote','showStreak','showDuaa','appSounds'].forEach(k=>{
+        const s=localStorage.getItem('pref-'+k);
+        if(s!==null)prefs[k]=s==='1';
+        const idMap={homeQuote:'homeQuoteToggle',showStreak:'streakToggle',showDuaa:'duaaToggle',appSounds:'soundToggle'};
+        const t=document.getElementById(idMap[k]);
+        if(t)t.classList.toggle('on',prefs[k]);
+    });
+    applyPrefs();
+}
+function applyPrefs(){
+    const qcard=document.querySelector('.duaa-box');
+    if(qcard)qcard.style.display=prefs.showDuaa?'':'none';
+    const sbar=document.querySelector('.stats-bar');
+    if(sbar)sbar.style.display=prefs.showStreak?'':'none';
+}
+
+// ---- Goals ----
+let goals={water:8,tasbeeh:33,reading:20};
+function loadGoals(){
+    const saved=localStorage.getItem('goals');
+    if(saved){try{goals=JSON.parse(saved);}catch(e){}}
+    document.getElementById('goal-water').textContent=goals.water||8;
+    document.getElementById('goal-tasbeeh').textContent=goals.tasbeeh||33;
+    document.getElementById('goal-reading').textContent=goals.reading||20;
+}
+function changeGoal(name,delta){
+    const min={water:1,tasbeeh:10,reading:5};
+    const max={water:20,tasbeeh:1000,reading:120};
+    goals[name]=Math.max(min[name],Math.min(max[name],(goals[name]||0)+delta));
+    document.getElementById('goal-'+name).textContent=goals[name];
+}
+function saveGoals(){
+    localStorage.setItem('goals',JSON.stringify(goals));
+    const msg=document.getElementById('goals-saved-msg');
+    msg.style.display='block';
+    setTimeout(()=>msg.style.display='none',2500);
+}
+
+// ---- Danger Zone ----
+function resetStats(){
+    if(!confirm('هل أنتِ متأكدة من مسح جميع الإحصائيات؟'))return;
+    ['tasbeeh','memorywin','quizdone','watergoal','xowin','mathdone','todo','wordwin'].forEach(k=>localStorage.removeItem('stat-'+k));
+    alert('✅ تم مسح الإحصائيات');
+}
+function resetPoints(){
+    if(!confirm('هل أنتِ متأكدة من مسح النقاط؟'))return;
+    points=0;localStorage.setItem('points',0);updateStatsUI();buildBadges();
+    alert('✅ تم مسح النقاط');
+}
+function resetAllData(){
+    if(!confirm('⚠️ تحذير! سيتم مسح جميع بياناتكِ بشكل نهائي. هل أنتِ متأكدة؟'))return;
+    if(!confirm('هذا الإجراء لا يمكن التراجع عنه. موافقة نهائية؟'))return;
+    localStorage.clear();
+    location.reload();
+}
+
+// ---- Init Settings ----
+function initSettings(){
+    loadProfile();
+    loadAppColor();
+    loadFontSize();
+    loadReminders();
+    loadGoals();
+    loadPrefs();
+    syncDarkToggle();
+    // load anim state
+    const anim=localStorage.getItem('animations');
+    if(anim==='off'){
+        const t=document.getElementById('animToggle');
+        if(t)t.classList.remove('on');
+    }
+}
+initSettings();
 </script>
 </body>
 </html>
